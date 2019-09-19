@@ -8,6 +8,9 @@
             <h1>ユーザー登録</h1>
           </div>
         </template>
+
+        <ErrMsg class="u-mb-medium" />
+
         <form class="form">
           <div class="form__group">
             <label for="email" class="form__label">
@@ -35,6 +38,7 @@
 
 <script>
 import Card from '../components/Card'
+import ErrMsg from '../components/ErrMsg'
 import firebase from 'firebase'
 
 export default {
@@ -46,11 +50,20 @@ export default {
   },
   components: {
     Card,
+    ErrMsg
   },
   methods: {
     async signUp() {
-      await firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-      this.$router.push({ name: 'dashboard' })
+      // エラーメッセージ初期化
+      this.$store.dispatch('error/clearError')
+
+      // 登録処理
+      try {
+        await firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+        this.$router.push({ name: 'dashboard' })
+      } catch(error) {
+        this.$store.dispatch('error/setError', error)
+      }
     }
   }
 }
