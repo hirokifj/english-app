@@ -13,16 +13,16 @@
             <label for="email" class="form__label">
               <span class="label-text">メールアドレス</span>
             </label>
-            <input id="email" type="text" class="form__input">
+            <input id="email" type="email" class="form__input" v-model="email">
           </div>
           <div class="form__group">
             <label for="password" class="form__label">
               <span class="label-text">パスワード</span>
             </label>
-            <input id="password" type="text" class="form__input">
+            <input id="password" type="password" class="form__input" v-model="password">
           </div>
           <div class="form__btn u-center-text">
-            <button class="btn btn--big btn--yellow">
+            <button class="btn btn--big btn--yellow" @click.prevent="signUp">
               登録
             </button>
           </div>
@@ -35,6 +35,7 @@
 
 <script>
 import Card from '../components/Card'
+import firebase from 'firebase'
 
 export default {
   data() {
@@ -45,6 +46,12 @@ export default {
   },
   components: {
     Card,
+  },
+  methods: {
+    async signUp() {
+      await firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+      this.$router.push({ name: 'dashboard' })
+    }
   }
 }
 </script>
