@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import 'normalize.css'
+import './style/reset.css'
 
 export default {
   name: 'App'
