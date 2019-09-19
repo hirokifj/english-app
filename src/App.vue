@@ -1,20 +1,21 @@
 <template>
   <div id="app">
     <div class="container">
-      <div id="nav">
-        <router-link to="/">Home</router-link> |
-        <router-link to="/about">About</router-link>
-      </div>
+      <Header />
       <router-view/>
     </div>
   </div>
 </template>
 
 <script>
-import 'normalize.css'
+import './style/reset.css'
+import Header from './components/Header'
 
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    Header,
+  }
 }
 </script>
 
