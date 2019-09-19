@@ -8,6 +8,14 @@
   </div>
 </template>
 
+<script>
+import 'normalize.css'
+
+export default {
+  name: 'App'
+}
+</script>
+
 <style lang="scss">
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
