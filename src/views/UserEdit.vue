@@ -4,6 +4,16 @@
 
       <ErrMsg class="u-mb-medium" />
 
+      <Card :white="true" color="blue" class="u-mb-medium">
+        <template slot="header">
+          <h1>ユーザー情報</h1>
+        </template>
+        <div class="profile-item">
+          <span class="profile-item__title"><b>メールアドレス：</b>{{ loginUser.email }}</span>
+          <router-link :to="{ name: 'emailedit' }" class="link-text">メールアドレス変更</router-link>
+        </div>
+      </Card>
+
       <button class="btn btn--yellow" @click="signOut">
         ログアウト
       </button>
@@ -13,11 +23,18 @@
 
 <script>
 import firebase from 'firebase'
+import Card from '../components/Card'
 import ErrMsg from '../components/ErrMsg'
 
 export default {
   components: {
-    ErrMsg
+    ErrMsg,
+    Card
+  },
+  computed: {
+    loginUser() {
+      return this.$store.state.user.loginUser
+    }
   },
   methods: {
     async signOut() {
@@ -43,5 +60,11 @@ export default {
 .main {
   padding: 8rem 0 50rem 0;
   background-color: $color-bg-grey;
+}
+.profile-item {
+  &__title {
+    display: block;
+    margin-bottom: 1rem;
+  }
 }
 </style>

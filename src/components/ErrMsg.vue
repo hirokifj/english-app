@@ -43,6 +43,9 @@ export default {
           case 'auth/wrong-password':
             errMsg = 'メールアドレスとパスワードのどちらかが誤っています。'
             break
+          case 'auth/user-mismatch':
+            errMsg = '認証情報が一致しません。'
+            break
           default:
             errMsg = '処理に失敗しました。時間をおいて再度お試しください。'
             break
