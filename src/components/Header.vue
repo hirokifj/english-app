@@ -4,9 +4,22 @@
       <h1 class="site-title">
         <router-link :to="{ name: 'home' }">English App</router-link>
       </h1>
+
+      <MainNav />
+
     </div>
   </header>
 </template>
+
+<script>
+import MainNav from './MainNav'
+
+export default {
+  components: {
+    MainNav
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .header {
