@@ -41,7 +41,7 @@ export default {
             errMsg = 'ユーザーが見つかりませんでした。'
             break
           case 'auth/wrong-password':
-            errMsg = 'メールアドレスとパスワードのどちらかが誤っています。'
+            errMsg = '認証情報が一致しません。'
             break
           case 'auth/user-mismatch':
             errMsg = '認証情報が一致しません。'
