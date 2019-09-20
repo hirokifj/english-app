@@ -1,29 +1,45 @@
 <template>
   <nav class="footer-menu">
     <ul class="footer-menu__list">
-      <li class="footer-menu__item">
-        <router-link :to="{ name: 'signup' }" class="footer-menu__link">
-          <div class="footer-menu__icon">
-            <font-awesome-icon icon="user-plus" />
-          </div>
-          <span class="footer-menu__text">ユーザー登録</span>
-        </router-link>
-      </li>
-      <li class="footer-menu__item">
-        <router-link :to="{ name: 'signin' }" class="footer-menu__link">
-          <div class="footer-menu__icon">
-            <font-awesome-icon icon="sign-in-alt" />
-          </div>
-          <span class="footer-menu__text">ログイン</span>
-        </router-link>
-      </li>
+      <template v-if="loginUser">
+        <li class="footer-menu__item">
+          <router-link :to="{ name: 'dashboard' }" class="footer-menu__link">
+            <div class="footer-menu__icon">
+              <font-awesome-icon icon="user" />
+            </div>
+            <span class="footer-menu__text">マイページ</span>
+          </router-link>
+        </li>
+      </template>
+      <template v-else>
+        <li class="footer-menu__item">
+          <router-link :to="{ name: 'signup' }" class="footer-menu__link">
+            <div class="footer-menu__icon">
+              <font-awesome-icon icon="user-plus" />
+            </div>
+            <span class="footer-menu__text">ユーザー登録</span>
+          </router-link>
+        </li>
+        <li class="footer-menu__item">
+          <router-link :to="{ name: 'signin' }" class="footer-menu__link">
+            <div class="footer-menu__icon">
+              <font-awesome-icon icon="sign-in-alt" />
+            </div>
+            <span class="footer-menu__text">ログイン</span>
+          </router-link>
+        </li>
+      </template>
     </ul>
   </nav>
 </template>
 
 <script>
 export default {
-
+  computed: {
+    loginUser() {
+      return this.$store.state.user.loginUser
+    }
+  }
 }
 </script>
 
