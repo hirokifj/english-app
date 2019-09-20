@@ -1,15 +1,32 @@
 <template>
   <nav class="main-nav">
     <ul class="main-nav__list">
-      <li class="main-nav__item main-nav__item--pc">
-        <router-link :to="{ name: 'signin' }" class="main-nav__link">ログイン</router-link>
-      </li>
-      <li class="main-nav__item main-nav__item--pc">
-        <router-link :to="{ name: 'signup' }" class="main-nav__link">ユーザー登録</router-link>
-      </li>
+      <template v-if="loginUser">
+        <li class="main-nav__item main-nav__item--pc">
+          <router-link :to="{ name: 'dashboard' }" class="main-nav__link">マイページ</router-link>
+        </li>
+      </template>
+      <template v-else>
+        <li class="main-nav__item main-nav__item--pc">
+          <router-link :to="{ name: 'signin' }" class="main-nav__link">ログイン</router-link>
+        </li>
+        <li class="main-nav__item main-nav__item--pc">
+          <router-link :to="{ name: 'signup' }" class="main-nav__link">ユーザー登録</router-link>
+        </li>
+      </template>
     </ul>
   </nav>
 </template>
+
+<script>
+export default {
+  computed: {
+    loginUser() {
+      return this.$store.state.user.loginUser
+    }
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .main-nav {
