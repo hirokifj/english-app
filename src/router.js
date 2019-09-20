@@ -26,6 +26,11 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "signin" */ './views/SignIn.vue')
     },
     {
+      path: '/reset',
+      name: 'reset',
+      component: () => import(/* webpackChunkName: "reset" */ './views/PasswordReset.vue')
+    },
+    {
       path: '/dashboard',
       name: 'dashboard',
       component: () => import(/* webpackChunkName: "dashboard" */ './views/Dashboard.vue'),
