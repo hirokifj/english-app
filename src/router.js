@@ -43,6 +43,12 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "emailedit" */ './views/EmailEdit.vue'),
       meta: { requireAuth: true }
     },
+    {
+      path: '/user/edit/password',
+      name: 'passedit',
+      component: () => import(/* webpackChunkName: "passedit" */ './views/PasswordEdit.vue'),
+      meta: { requireAuth: true }
+    },
   ]
 })
 
