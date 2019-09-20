@@ -21,11 +21,22 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "signup" */ './views/SignUp.vue')
     },
     {
+      path: '/signin',
+      name: 'signin',
+      component: () => import(/* webpackChunkName: "signin" */ './views/SignIn.vue')
+    },
+    {
       path: '/dashboard',
       name: 'dashboard',
       component: () => import(/* webpackChunkName: "dashboard" */ './views/Dashboard.vue'),
       meta: { requireAuth: true }
-    }
+    },
+    {
+      path: '/user/edit',
+      name: 'useredit',
+      component: () => import(/* webpackChunkName: "useredit" */ './views/UserEdit.vue'),
+      meta: { requireAuth: true }
+    },
   ]
 })
 

@@ -34,6 +34,15 @@ export default {
           case 'auth/weak-password':
             errMsg = 'パスワードは6文字以上で入力してください。'
             break
+          case 'auth/user-disabled':
+            errMsg = '無効のユーザーアカウントです。'
+            break
+          case 'auth/user-not-found':
+            errMsg = 'ユーザーが見つかりませんでした。'
+            break
+          case 'auth/wrong-password':
+            errMsg = 'メールアドレスとパスワードのどちらかが誤っています。'
+            break
           default:
             errMsg = '処理に失敗しました。時間をおいて再度お試しください。'
             break
