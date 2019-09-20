@@ -5,6 +5,9 @@
         <div class="u-center-text u-mb-medium">
           <h1 class="page-title">例文登録</h1>
         </div>
+
+        <ErrMsg class="u-mb-medium" />
+
         <form class="form">
           <div class="form__group">
             <label for="en" class="form__label">
@@ -19,7 +22,7 @@
             <input id="ja" type="text" class="form__input" v-model="japanese">
           </div>
           <div class="form__btn u-center-text">
-            <button class="btn btn--big btn--green">
+            <button class="btn btn--big btn--green" @click.prevent="create">
               登録
             </button>
           </div>
@@ -31,14 +34,43 @@
 </template>
 
 <script>
+import ErrMsg from '../components/ErrMsg'
+import firebase from 'firebase'
+
 export default {
   data() {
     return {
       english: '',
       japanese: ''
     }
-  }
+  },
+  components: {
+    ErrMsg
+  },
+  computed: {
+    loginUser() {
+      return this.$store.state.user.loginUser
+    }
+  },
+  methods: {
+    async create() {
+      // エラーメッセージ初期化
+      this.$store.dispatch('error/clearError')
 
+      try {
+        // 例文の登録
+        const sentence = await firebase.firestore().collection('sentences').add({
+          userId: this.loginUser.id,
+          english: this.english,
+          japanese: this.japanese,
+          createdAt: new Date()
+        })
+        // todo: 詳細ページへリダイレクト
+      } catch(error) {
+        this.$store.dispatch('error/setError', error)
+      }
+    }
+  }
 }
 </script>
 
