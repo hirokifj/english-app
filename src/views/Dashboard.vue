@@ -1,7 +1,7 @@
 <template>
   <main class="main">
     <div class="u-max-width">
-      <h1>ダッシュボード</h1>
+      <router-link :to="{ name: 'senetncesCreate' }" class="btn btn--green btn--small">例文登録</router-link>
     </div>
   </main>
 </template>
