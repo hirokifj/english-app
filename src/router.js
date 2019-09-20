@@ -54,6 +54,11 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "passedit" */ './views/PasswordEdit.vue'),
       meta: { requireAuth: true }
     },
+    {
+      path: '/sentences/create',
+      component: () => import(/* webpackChunkName: "create-sentence" */ './views/SentenceCreate.vue'),
+      meta: { requireAuth: true }
+    },
   ]
 })
 
