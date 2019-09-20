@@ -22,7 +22,7 @@
             <input id="new-password" type="password" class="form__input" v-model="newPassword">
           </div>
           <div class="form__btn u-center-text">
-            <button class="btn btn--big btn--pink">
+            <button class="btn btn--big btn--pink" @click.prevent="updatePass">
               変更
             </button>
           </div>
@@ -34,6 +34,8 @@
 
 <script>
 import ErrMsg from '../components/ErrMsg'
+import firebase from 'firebase'
+import { reAuth } from '../lib/functions'
 
 export default {
   data() {
@@ -45,6 +47,30 @@ export default {
   components: {
     ErrMsg
   },
+  computed: {
+    loginUser() {
+      return this.$store.state.user.loginUser
+    }
+  },
+  methods: {
+    async updatePass() {
+      // エラーメッセージ初期化
+      this.$store.dispatch('error/clearError')
+
+      try {
+        // ユーザー情報を取得
+        const user = firebase.auth().currentUser
+        // 再認証処理
+        await reAuth(user, this.loginUser.email, this.password)
+
+        // パスワード変更
+        await user.updatePassword(this.newPassword)
+        this.$router.push({ name: 'useredit' })
+      } catch(error) {
+        this.$store.dispatch('error/setError', error)
+      }
+    }
+  }
 }
 </script>
 
