@@ -4,6 +4,7 @@
       <Header />
       <router-view/>
       <Footer />
+      <FooterNav />
     </div>
   </div>
 </template>
@@ -12,12 +13,14 @@
 import './style/reset.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import FooterNav from './components/FooterNav'
 
 export default {
   name: 'App',
   components: {
     Header,
-    Footer
+    Footer,
+    FooterNav
   }
 }
 </script>
