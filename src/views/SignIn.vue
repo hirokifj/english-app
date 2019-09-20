@@ -22,7 +22,7 @@
             <input id="password" type="password" class="form__input" v-model="password">
           </div>
           <div class="form__btn u-center-text">
-            <button class="btn btn--big btn--green">
+            <button class="btn btn--big btn--green" @click.prevent="signIn">
               ログイン
             </button>
           </div>
@@ -35,6 +35,7 @@
 
 <script>
 import Card from '../components/Card'
+import firebase from 'firebase'
 
 export default {
   data() {
@@ -45,6 +46,13 @@ export default {
   },
   components: {
     Card
+  },
+  methods: {
+    async signIn() {
+      // ログイン
+      await firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+      this.$router.push({ name: 'dashboard' })
+    }
   }
 }
 </script>
