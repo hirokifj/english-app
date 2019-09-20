@@ -11,7 +11,7 @@
 
         <ErrMsg class="u-mb-medium" />
 
-        <form class="form">
+        <form class="form u-mb-medium">
           <div class="form__group">
             <label for="email" class="form__label">
               <span class="label-text">メールアドレス</span>
@@ -30,6 +30,9 @@
             </button>
           </div>
         </form>
+        <div class="link u-center-text">
+          <router-link :to="{ name: 'reset' }" class="link-text">パスワードを忘れた方はこちら</router-link>
+        </div>
       </Card>
 
     </div>
