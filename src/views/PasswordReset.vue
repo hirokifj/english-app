@@ -19,7 +19,7 @@
             <input id="email" type="email" class="form__input" v-model="email">
           </div>
           <div class="form__btn u-center-text">
-            <button class="btn btn--big btn--pink">
+            <button class="btn btn--big btn--pink" @click.prevent="sendMail">
               メール送信
             </button>
           </div>
@@ -39,6 +39,7 @@
 <script>
 import Card from '../components/Card'
 import ErrMsg from '../components/ErrMsg'
+import firebase from 'firebase'
 
 export default {
   data() {
@@ -50,6 +51,27 @@ export default {
   components: {
     Card,
     ErrMsg
+  },
+  methods: {
+    async sendMail() {
+      if(!this.isDone) {
+        // エラーメッセージを初期化
+        this.$store.dispatch('error/clearError')
+
+        // パスワードリセットメール送信
+        try {
+          await firebase.auth().sendPasswordResetEmail(
+            this.email,
+            {
+              url: 'https://english-app-2f657.firebaseapp.com/signin'
+            }
+          )
+          this.isDone = true
+        } catch(error) {
+          this.$store.dispatch('error/setError', error)
+        }
+      }
+    }
   }
 }
 </script>
