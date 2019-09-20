@@ -5,9 +5,11 @@ import store from './store/'
 import './style/app.scss'
 import './plugins/firebase'
 import { library } from '@fortawesome/fontawesome-svg-core'
+import { faUserCog } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 // fontawesomeを利用する
+library.add(faUserCog)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false

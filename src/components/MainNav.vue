@@ -5,6 +5,11 @@
         <li class="main-nav__item main-nav__item--pc">
           <router-link :to="{ name: 'dashboard' }" class="main-nav__link">マイページ</router-link>
         </li>
+        <li class="main-nav__item main-nav__item--icon">
+          <router-link :to="{ name: 'useredit' }" class="main-nav__link">
+            <font-awesome-icon icon="user-cog" />
+          </router-link>
+        </li>
       </template>
       <template v-else>
         <li class="main-nav__item main-nav__item--pc">
@@ -40,12 +45,11 @@ export default {
     letter-spacing: 1px;
 
     &--icon {
-      & i {
-        font-size: 3.2rem;
-        vertical-align: bottom;
-        @include respond(tab-port) {
-            vertical-align: baseline;
-        }
+      font-size: 2.4rem;
+      vertical-align: bottom;
+      @include respond(tab-port) {
+        font-size: 2.8rem;
+        vertical-align: baseline;
       }
     }
 
