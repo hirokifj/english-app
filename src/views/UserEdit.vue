@@ -14,9 +14,13 @@
         </div>
       </Card>
 
-      <button class="btn btn--yellow" @click="signOut">
-        ログアウト
-      </button>
+      <div class="btn-group">
+        <button class="btn btn--yellow" @click="signOut">
+          ログアウト
+        </button>
+        <router-link :to="{ name: 'passedit' }" class="btn btn--green">パスワード変更</router-link>
+      </div>
+
     </div>
   </main>
 </template>
@@ -65,6 +69,17 @@ export default {
   &__title {
     display: block;
     margin-bottom: 1rem;
+  }
+}
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+
+  & .btn {
+    margin-bottom: 2rem;
+    &:not(:last-child) {
+      margin-right: 2rem;
+    }
   }
 }
 </style>
