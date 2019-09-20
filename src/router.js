@@ -56,6 +56,7 @@ const router = new Router({
     },
     {
       path: '/sentences/create',
+      name: 'senetncesCreate',
       component: () => import(/* webpackChunkName: "create-sentence" */ './views/SentenceCreate.vue'),
       meta: { requireAuth: true }
     },
