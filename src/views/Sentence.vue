@@ -2,6 +2,8 @@
   <main class="main u-max-width">
     <div class="u-width-60">
 
+      <ErrMsg class="u-mb-medium" />
+
       <Card color="green" class="u-mb-medium">
         <template slot="header">
           <div class="u-center-text">
@@ -20,13 +22,18 @@
         </dl>
       </Card>
 
-      <router-link class="btn btn--yellow" :to="{ name: 'senetncesEdit', params: { id: id } }">編集</router-link>
+      <div v-if="canEdit" class="btn-group">
+        <router-link class="btn btn--yellow" :to="{ name: 'senetncesEdit', params: { id: id } }">編集</router-link>
+        <button class="btn btn--pink" @click="deleteItem">削除</button>
+      </div>
     </div>
   </main>
 </template>
 
 <script>
 import Card from '../components/Card'
+import ErrMsg from '../components/ErrMsg'
+import firebase from 'firebase'
 import { getSentenceById } from '../lib/functions'
 
 export default {
@@ -39,7 +46,30 @@ export default {
     }
   },
   components: {
-    Card
+    Card,
+    ErrMsg
+  },
+  computed: {
+    loginUser() {
+      return this.$store.state.user.loginUser
+    },
+    canEdit() {
+      return this.loginUser.id === this.sentence.userId
+    }
+  },
+  methods: {
+    async deleteItem() {
+      // エラーメッセージ初期化
+      this.$store.dispatch('error/clearError')
+
+      try {
+        // 例文の削除
+        await firebase.firestore().collection('sentences').doc(this.id).delete()
+        this.$router.push({ name: 'dashboard' })
+      } catch(error) {
+        this.$store.dispatch('error/setError', error)
+      }
+    }
   },
   watch: {
     id: {
@@ -72,6 +102,7 @@ export default {
     padding: 6rem 0 10rem 0;
   }
 }
+
 .sentence-info {
   &__item {
     &:not(:last-child) {
@@ -82,6 +113,21 @@ export default {
   & dt {
     font-size: 14px;
     font-weight: bold;
+  }
+}
+
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+
+  @include respond(phone) {
+    justify-content: center;
+  }
+
+  & .btn {
+    &:not(:last-child) {
+      margin-right: 2rem;
+    }
   }
 }
 </style>
