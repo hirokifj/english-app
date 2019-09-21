@@ -81,6 +81,12 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "list-sentence" */ './views/Sentences.vue'),
       meta: { requireAuth: true }
     },
+    {
+      path: '/lists/create',
+      name: 'listsCreate',
+      component: () => import(/* webpackChunkName: "create-list" */ './views/ListCreate.vue'),
+      meta: { requireAuth: true }
+    },
   ]
 })
 
