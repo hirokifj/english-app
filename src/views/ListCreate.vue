@@ -5,10 +5,14 @@
         <div class="u-center-text u-mb-medium">
           <h1 class="page-title">リスト作成</h1>
         </div>
+
+        <ErrMsg class="u-mb-medium" />
+
         <form class="form">
           <div class="form__group">
             <label for="list-title" class="form__label">
               <span class="label-text">リストタイトル</span>
+              <span class="form__required-badge">必須</span>
             </label>
             <input id="list-title" type="text" class="form__input" v-model="title">
           </div>
@@ -34,11 +38,39 @@
 </template>
 
 <script>
+import ErrMsg from '../components/ErrMsg'
+
 export default {
   data() {
     return {
       title: '',
       isPublic: true
+    }
+  },
+  components: {
+    ErrMsg
+  },
+  methods: {
+    validateList() {
+      // タイトル入力チェック
+      if(this.title === '') {
+        // Firebase標準のエラー情報に合わせたオブジェクトをstoreに渡す
+        this.$store.dispatch('error/setError', {
+          code: 'required-title-field',
+          message: 'title field is required'
+        })
+        return false
+      }
+      // 公開フラグチェック
+      if(typeof this.isPublic !== 'boolean') {
+        this.$store.dispatch('error/setError', {
+          code: 'invalid-public-field',
+          message: 'public field is not boolean'
+        })
+        return false
+      }
+
+      return true
     }
   }
 }
