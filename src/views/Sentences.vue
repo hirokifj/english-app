@@ -5,6 +5,8 @@
         <h1 class="page-title">例文一覧</h1>
       </div>
 
+      <ErrMsg class="u-mb-medium" />
+
       <Card>
         <ul class="list">
           <li class="list__item" v-for="sentence in sentences" :key="sentence.id">
@@ -16,6 +18,7 @@
             </router-link>
           </li>
         </ul>
+        <infinite-loading @infinite="infiniteLoad"></infinite-loading>
       </Card>
 
     </div>
@@ -24,31 +27,43 @@
 
 <script>
 import Card from '../components/Card'
-import firebase from 'firebase'
+import ErrMsg from '../components/ErrMsg'
+import { fetchUserSentences } from '../lib/functions'
 
 export default {
-  created() {
-    // 例文一覧の取得
-    firebase.firestore().collection('sentences')
-      .where('userId', '==', this.loginUser.id)
-      .get()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-          this.sentences.push(Object.assign(doc.data(), { id: doc.id }))
-        })
-      })
-  },
   data() {
     return {
-      sentences: []
+      sentences: [],
+      lastItem: null
     }
   },
   components: {
-    Card
+    Card,
+    ErrMsg
   },
   computed: {
     loginUser() {
       return this.$store.state.user.loginUser
+    }
+  },
+  methods: {
+    async infiniteLoad($state) {
+      try {
+        const results = await fetchUserSentences(30, this.loginUser.id, this.lastItem)
+
+        if(results.items.length > 0) { // 読み込むデータがまだ存在する場合
+          results.items.forEach(item => {
+            this.sentences.push(item)
+          })
+          this.lastItem = results.lastItem
+
+          $state.loaded()
+        } else {
+          $state.complete()
+        }
+      } catch(error) {
+        this.$store.dispatch('error/setError', error)
+      }
     }
   }
 }
