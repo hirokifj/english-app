@@ -27,7 +27,7 @@
             </div>
           </div>
           <div class="form__btn u-center-text">
-            <button class="btn btn--big btn--yellow">
+            <button class="btn btn--big btn--yellow" @click.prevent="create">
               作成
             </button>
           </div>
@@ -39,6 +39,7 @@
 
 <script>
 import ErrMsg from '../components/ErrMsg'
+import firebase from 'firebase'
 
 export default {
   data() {
@@ -50,7 +51,34 @@ export default {
   components: {
     ErrMsg
   },
+  computed: {
+    loginUser() {
+      return this.$store.state.user.loginUser
+    }
+  },
   methods: {
+    async create() {
+      // エラーメッセージ初期化
+      this.$store.dispatch('error/clearError')
+
+      if(this.validateList()) {
+        try {
+          // リストの作成
+          const list = await firebase.firestore().collection('lists').add({
+            userId: this.loginUser.id,
+            title: this.title,
+            isPublic: this.isPublic,
+            likeCount: 0,
+            sentences: [],
+            createdAt: new Date()
+          })
+          // todo: 例文選択画面へリダイレクト
+        } catch(error) {
+          console.log(error)
+          this.$store.dispatch('error/setError', error)
+        }
+      }
+    },
     validateList() {
       // タイトル入力チェック
       if(this.title === '') {
