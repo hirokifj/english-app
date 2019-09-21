@@ -22,7 +22,7 @@
         </dl>
       </Card>
 
-      <div class="btn-group">
+      <div v-if="canEdit" class="btn-group">
         <router-link class="btn btn--yellow" :to="{ name: 'senetncesEdit', params: { id: id } }">編集</router-link>
         <button class="btn btn--pink" @click="deleteItem">削除</button>
       </div>
@@ -48,6 +48,14 @@ export default {
   components: {
     Card,
     ErrMsg
+  },
+  computed: {
+    loginUser() {
+      return this.$store.state.user.loginUser
+    },
+    canEdit() {
+      return this.loginUser.id === this.sentence.userId
+    }
   },
   methods: {
     async deleteItem() {
