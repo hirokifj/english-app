@@ -45,3 +45,16 @@ export const fetchUserSentences = async (itemNumber, userId, lastItem) => {
     lastItem: snapshot.docs[snapshot.docs.length - 1]
   }
 }
+
+// リストデータの取得。見つからない場合はfalseを返す。
+export const fetchListById = id => {
+  return new Promise((resolve, reject) => {
+    const listRef = firebase.firestore().collection('lists').doc(id)
+
+    listRef.get().then(doc => {
+      resolve(Object.assign(doc.data(), { id: doc.id }) || false)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
