@@ -8,3 +8,16 @@ export const reAuth = async (currentUser, currentEmail, currentPass) => {
   )
   return await currentUser.reauthenticateWithCredential(credential)
 }
+
+// 例文データの取得。見つからない場合はfalseを返す。
+export const getSentenceById = id => {
+  return new Promise((resolve, reject) => {
+    const sentenceRef = firebase.firestore().collection('sentences').doc(id)
+
+    sentenceRef.get().then(doc => {
+      resolve(doc.data() || false)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
