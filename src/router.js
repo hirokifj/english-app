@@ -67,6 +67,13 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "detail-sentence" */ './views/Sentence.vue'),
       meta: { requireAuth: true }
     },
+    {
+      path: '/sentences/',
+      name: 'senetncesList',
+      props: true,
+      component: () => import(/* webpackChunkName: "list-sentence" */ './views/Sentences.vue'),
+      meta: { requireAuth: true }
+    },
   ]
 })
 
