@@ -15,7 +15,7 @@ export const getSentenceById = id => {
     const sentenceRef = firebase.firestore().collection('sentences').doc(id)
 
     sentenceRef.get().then(doc => {
-      resolve(doc.data() || false)
+      resolve(Object.assign(doc.data(), { id: doc.id }) || false)
     }).catch(err => {
       reject(err)
     })
