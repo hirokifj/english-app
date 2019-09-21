@@ -1,7 +1,8 @@
 <template>
   <main class="main u-max-width">
     <div class="u-width-60">
-      <Card color="green">
+
+      <Card color="green" class="u-mb-medium">
         <template slot="header">
           <div class="u-center-text">
             <h1>例文情報</h1>
@@ -18,6 +19,8 @@
           </div>
         </dl>
       </Card>
+
+      <router-link class="btn btn--yellow" :to="{ name: 'senetncesEdit', params: { id: id } }">編集</router-link>
     </div>
   </main>
 </template>
@@ -64,9 +67,9 @@ export default {
 
 <style lang="scss" scoped>
 .main {
-  padding: 6rem 0 30rem 0;
+  padding: 6rem 0 20rem 0;
   @include respond(phone){
-    padding: 6rem 0 14rem 0;
+    padding: 6rem 0 10rem 0;
   }
 }
 .sentence-info {

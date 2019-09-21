@@ -61,6 +61,13 @@ const router = new Router({
       meta: { requireAuth: true }
     },
     {
+      path: '/sentences/:id/edit',
+      name: 'senetncesEdit',
+      props: true,
+      component: () => import(/* webpackChunkName: "edit-sentence" */ './views/SentenceEdit.vue'),
+      meta: { requireAuth: true }
+    },
+    {
       path: '/sentences/:id',
       name: 'senetncesDetail',
       props: true,
