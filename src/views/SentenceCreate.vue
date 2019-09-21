@@ -65,7 +65,8 @@ export default {
           japanese: this.japanese,
           createdAt: new Date()
         })
-        // todo: 詳細ページへリダイレクト
+        // 詳細ページへリダイレクト
+        this.$router.push({ name: 'senetncesDetail', params: { id: sentence.id } })
       } catch(error) {
         this.$store.dispatch('error/setError', error)
       }
