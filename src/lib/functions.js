@@ -21,3 +21,27 @@ export const getSentenceById = id => {
     })
   })
 }
+
+// 指定したユーザーの例文一覧を取得する
+export const fetchUserSentences = async (itemNumber, userId, lastItem) => {
+
+  let query
+  if(lastItem) {
+    query = firebase.firestore().collection('sentences')
+      .where('userId', '==', userId)
+      .startAfter(lastItem)
+      .limit(itemNumber)
+  } else {
+    query = firebase.firestore().collection('sentences')
+      .where('userId', '==', userId)
+      .limit(itemNumber)
+  }
+
+  // firestoreからデータを取得
+  const snapshot = await query.get()
+
+  return {
+    items: snapshot.docs.map(doc => Object.assign(doc.data(), { id: doc.id })), // ドキュメントIDもデータに含める
+    lastItem: snapshot.docs[snapshot.docs.length - 1]
+  }
+}
