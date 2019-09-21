@@ -60,6 +60,13 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "create-sentence" */ './views/SentenceCreate.vue'),
       meta: { requireAuth: true }
     },
+    {
+      path: '/sentences/:id',
+      name: 'senetncesDetail',
+      props: true,
+      component: () => import(/* webpackChunkName: "detail-sentence" */ './views/Sentence.vue'),
+      meta: { requireAuth: true }
+    },
   ]
 })
 
