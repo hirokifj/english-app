@@ -22,7 +22,7 @@
             <input id="ja" type="text" class="form__input" v-model="japanese">
           </div>
           <div class="form__btn u-center-text">
-            <button class="btn btn--big btn--green">
+            <button class="btn btn--big btn--green" @click.prevent="update">
               更新
             </button>
           </div>
@@ -35,6 +35,7 @@
 
 <script>
 import ErrMsg from '../components/ErrMsg'
+import firebase from 'firebase'
 import { getSentenceById } from '../lib/functions'
 
 export default {
@@ -53,6 +54,24 @@ export default {
   computed: {
     loginUser() {
       return this.$store.state.user.loginUser
+    }
+  },
+  methods: {
+    async update() {
+      // エラーメッセージ初期化
+      this.$store.dispatch('error/clearError')
+
+      try {
+        // 例文の更新
+        await firebase.firestore().collection('sentences').doc(this.id).update({
+          english: this.english,
+          japanese: this.japanese
+        })
+        // 詳細ページへリダイレクト
+        this.$router.push({ name: 'senetncesDetail', params: { id: this.id } })
+      } catch(error) {
+        this.$store.dispatch('error/setError', error)
+      }
     }
   },
   watch: {
