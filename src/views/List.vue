@@ -9,20 +9,27 @@
         <router-link :to="{ name: 'listsEdit', params: id }" class="link-text">編集</router-link>
       </div>
 
-      <Card color="yellow">
+      <Card color="yellow" class="u-mb-big">
         <template slot="header">
           <h2>リストの例文</h2>
         </template>
         <SentencesList :sentences="listSentences" />
       </Card>
 
+      <ErrMsg class="u-mb-medium" />
+
+      <div v-if="isOwner" class="u-center-text">
+        <button class="btn btn--pink" @click="deleteList">リスト削除</button>
+      </div>
     </div>
   </main>
 </template>
 
 <script>
 import Card from '../components/Card'
+import ErrMsg from '../components/ErrMsg'
 import SentencesList from '../components/SentencesList'
+import firebase from 'firebase'
 import { fetchListById, getSentenceById } from '../lib/functions'
 
 export default {
@@ -37,6 +44,7 @@ export default {
   },
   components: {
     Card,
+    ErrMsg,
     SentencesList
   },
   computed: {
@@ -48,6 +56,20 @@ export default {
         return this.loginUser.id === this.list.userId
       } else {
         return false
+      }
+    }
+  },
+  methods: {
+    async deleteList() {
+      // エラーメッセージ初期化
+      this.$store.dispatch('error/clearError')
+
+      try {
+        // リストの削除
+        await firebase.firestore().collection('lists').doc(this.id).delete()
+        this.$router.push({ name: 'dashboard' })
+      } catch(error) {
+        this.$store.dispatch('error/setError', error)
       }
     }
   },
