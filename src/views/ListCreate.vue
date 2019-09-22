@@ -75,7 +75,6 @@ export default {
           // 例文選択画面へリダイレクト
           this.$router.push({ name: 'listsSelect', params: { id: list.id } })
         } catch(error) {
-          console.log(error)
           this.$store.dispatch('error/setError', error)
         }
       }
