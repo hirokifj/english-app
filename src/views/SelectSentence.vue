@@ -116,7 +116,8 @@ export default {
         await firebase.firestore().collection('lists').doc(this.id).update({
           sentences: this.slectedSentenceIds
         })
-        // todo: 詳細ページへリダイレクト
+        // 詳細ページへリダイレクト
+        this.$router.push({ name: 'listsDetail', params: { id: this.id } })
       } catch(error) {
         this.$store.dispatch('error/setError', error)
       }
