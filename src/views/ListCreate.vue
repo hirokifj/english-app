@@ -18,11 +18,11 @@
           </div>
           <div class="form__group form-radio-wrap">
             <div class="form__radio-group">
-              <input type="radio" id="public" class="form__radio" value="true" v-model="isPublic">
+              <input type="radio" id="public" class="form__radio" :value="true" v-model="isPublic">
               <label for="public" class="form__label-radio">公開</label>
             </div>
             <div class="form__radio-group">
-              <input type="radio" id="private" class="form__radio" value="false" v-model="isPublic">
+              <input type="radio" id="private" class="form__radio" :value="false" v-model="isPublic">
               <label for="private" class="form__label-radio">非公開</label>
             </div>
           </div>
