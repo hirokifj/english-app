@@ -15,7 +15,7 @@ export const getSentenceById = id => {
     const sentenceRef = firebase.firestore().collection('sentences').doc(id)
 
     sentenceRef.get().then(doc => {
-      resolve(doc.data() || false)
+      resolve(Object.assign(doc.data(), { id: doc.id }) || false)
     }).catch(err => {
       reject(err)
     })
@@ -44,4 +44,17 @@ export const fetchUserSentences = async (itemNumber, userId, lastItem) => {
     items: snapshot.docs.map(doc => Object.assign(doc.data(), { id: doc.id })), // ドキュメントIDもデータに含める
     lastItem: snapshot.docs[snapshot.docs.length - 1]
   }
+}
+
+// リストデータの取得。見つからない場合はfalseを返す。
+export const fetchListById = id => {
+  return new Promise((resolve, reject) => {
+    const listRef = firebase.firestore().collection('lists').doc(id)
+
+    listRef.get().then(doc => {
+      resolve(Object.assign(doc.data(), { id: doc.id }) || false)
+    }).catch(err => {
+      reject(err)
+    })
+  })
 }

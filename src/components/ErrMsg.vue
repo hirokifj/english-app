@@ -46,6 +46,9 @@ export default {
           case 'auth/user-mismatch':
             errMsg = '認証情報が一致しません。'
             break
+          case 'required-title-field':
+            errMsg = 'タイトルを入力してください。'
+            break
           default:
             errMsg = '処理に失敗しました。時間をおいて再度お試しください。'
             break
