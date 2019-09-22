@@ -27,7 +27,7 @@
           </div>
         </div>
         <div class="form__btn u-center-text">
-          <button class="btn btn--big btn--green">
+          <button class="btn btn--big btn--green" @click.prevent="updateList">
             更新
           </button>
         </div>
@@ -38,7 +38,8 @@
 
 <script>
 import ErrMsg from '../components/ErrMsg'
-import { fetchListById } from '../lib/functions'
+import firebase from 'firebase'
+import { fetchListById, validateList } from '../lib/functions'
 
 export default {
   props: {
@@ -57,6 +58,26 @@ export default {
   computed: {
     loginUser() {
       return this.$store.state.user.loginUser
+    }
+  },
+  methods: {
+    async updateList() {
+      // エラーメッセージ初期化
+      this.$store.dispatch('error/clearError')
+
+      if(validateList(this.title, this.isPublic)) {  // バリデーションに問題がない場合
+        try {
+          // リストの更新
+          await firebase.firestore().collection('lists').doc(this.id).update({
+            title: this.title,
+            isPublic: this.isPublic
+          })
+          // リスト詳細画面へリダイレクト
+          this.$router.push({ name: 'listsDetail', params: { id: this.id } })
+        } catch(error) {
+          this.$store.dispatch('error/setError', error)
+        }
+      }
     }
   },
   watch: {
