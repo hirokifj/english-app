@@ -94,6 +94,12 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "select-list" */ './views/SelectSentence.vue'),
       meta: { requireAuth: true }
     },
+    {
+      path: '/lists/:id',
+      name: 'listsDetail',
+      props: true,
+      component: () => import(/* webpackChunkName: "detail-list" */ './views/List.vue')
+    },
   ]
 })
 
