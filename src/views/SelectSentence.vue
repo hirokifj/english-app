@@ -10,7 +10,7 @@
         <ErrMsg class="u-mb-medium" />
 
         <div class="list-menu u-mb-big u-center-text">
-          <button class="btn btn--blue btn--big">保存</button>
+          <button class="btn btn--blue btn--big" @click="saveListSentences">保存</button>
         </div>
         <div class="select-tab u-mb-medium">
           <button class="select-tab__btn" @click="showSelected = true" :class="{ active: showSelected }">選択中の例文</button>
@@ -43,6 +43,7 @@ import ErrMsg from '../components/ErrMsg'
 import SentencesList from '../components/SentencesList'
 import { fetchUserSentences, fetchListById, getSentenceById } from '../lib/functions'
 import _ from 'lodash'
+import firebase from 'firebase'
 
 export default {
   props: {
@@ -106,6 +107,19 @@ export default {
       const targetIndex = this.selectedSentences.findIndex(item => item.id === sentenceId)
       // 選択済み例文から除去
       this.selectedSentences.splice(targetIndex, 1)
+    },
+    async saveListSentences() {
+      // エラーメッセージ初期化
+      this.$store.dispatch('error/clearError')
+
+      try {
+        await firebase.firestore().collection('lists').doc(this.id).update({
+          sentences: this.slectedSentenceIds
+        })
+        // todo: 詳細ページへリダイレクト
+      } catch(error) {
+        this.$store.dispatch('error/setError', error)
+      }
     }
   },
   watch: {
