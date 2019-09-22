@@ -6,6 +6,7 @@
 
       <div class="btn-group u-mb-big">
         <router-link :to="{ name: 'senetncesCreate' }" class="btn btn--green btn--small">例文登録</router-link>
+        <router-link :to="{ name: 'listsCreate' }" class="btn btn--yellow btn--small">リスト作成</router-link>
       </div>
       <div class="card-group">
         <Card color="green" :white="true">
@@ -72,6 +73,19 @@ export default {
   & .card {
     flex: 0 0 45%;
     margin-bottom: 6rem;
+  }
+}
+
+.btn-group {
+  @include respond(phone) {
+    text-align: center;
+  }
+
+  & .btn:not(:last-child) {
+    margin-right: 6rem;
+    @include respond(phone) {
+      margin-right: 2rem;
+    }
   }
 }
 </style>
