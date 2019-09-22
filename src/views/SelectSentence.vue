@@ -12,22 +12,26 @@
         <div class="list-menu u-mb-big u-center-text">
           <button class="btn btn--blue btn--big">保存</button>
         </div>
+        <div class="select-tab u-mb-medium">
+          <button class="select-tab__btn" @click="showSelected = true" :class="{ active: showSelected }">選択中の例文</button>
+          <button class="select-tab__btn" @click="showSelected = false" :class="{ active: !showSelected }">例文一覧</button>
+        </div>
 
-        <Card color="green">
-          <template slot="header">
-            <h2>選択中の例文</h2>
-          </template>
-          <SentencesList :sentences="selectedSentences" />
-        </Card>
-
-        <Card color="yellow">
-          <template slot="header">
-            <h2>例文一覧</h2>
-          </template>
-          <SentencesList :sentences="unselectedSentences" />
-          <infinite-loading @infinite="infiniteLoad"></infinite-loading>
-        </Card>
-
+        <transition mode="out-in">
+          <Card v-if="showSelected" key="selcted" color="green">
+            <template slot="header">
+              <h2>選択中の例文</h2>
+            </template>
+            <SentencesList :sentences="selectedSentences" />
+          </Card>
+          <Card v-else key="unselected" color="yellow">
+            <template slot="header">
+              <h2>例文一覧</h2>
+            </template>
+            <SentencesList :sentences="unselectedSentences" />
+            <infinite-loading @infinite="infiniteLoad"></infinite-loading>
+          </Card>
+        </transition>
       </div>
     </div>
   </main>
@@ -49,7 +53,8 @@ export default {
       list: null,
       selectedSentences: [],
       userSentences: [],
-      lastItem: null
+      lastItem: null,
+      showSelected: true, // タブの切り替え管理
     }
   },
   components: {
@@ -130,10 +135,63 @@ export default {
 
 <style lang="scss" scoped>
 .main {
-  padding: 6rem 0 6rem 0;
+  padding: 6rem 0 16rem 0;
 }
+
 .page-title {
   font-size: 3.2rem;
   letter-spacing: 1px;
+}
+
+.select-tab {
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+
+  &__btn {
+    flex: 0 0 50%;
+    font-size: 16px;
+    padding: 2rem 0;
+    border: 1px solid $color-line-grey;
+    color: $color-grey-dark-1;
+    background-color: $color-white;
+    outline: none;
+    cursor: pointer;
+    @include respond(phone) {
+      padding: 1rem 0;
+    }
+
+    &:first-child {
+      border-radius: 5px 0 0 5px;
+      &.active {
+        background-color: $color-green;
+      }
+    }
+
+    &:last-child {
+      border-radius: 0 5px 5px 0;
+      &.active {
+        background-color: $color-yellow;
+      }
+    }
+
+    &.active {
+      color: $color-white;
+    }
+  }
+}
+
+.v-enter-active, .v-leave-active {
+  transition: opacity .4s, transform .4s;
+}
+
+.v-enter {
+  opacity: .2;
+  transform: translateX(-10px)
+}
+
+.v-leave-to {
+  opacity: 0;
+  transform: translateX(10px)
 }
 </style>
