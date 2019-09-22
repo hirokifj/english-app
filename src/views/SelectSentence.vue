@@ -22,13 +22,13 @@
             <template slot="header">
               <h2>選択中の例文</h2>
             </template>
-            <SentencesList :sentences="selectedSentences" :selectable="true" type="remove" />
+            <SentencesList :sentences="selectedSentences" :selectable="true" type="remove" @select="remove" />
           </Card>
           <Card v-else key="unselected" color="yellow">
             <template slot="header">
               <h2>例文一覧</h2>
             </template>
-            <SentencesList :sentences="unselectedSentences" :selectable="true" type="add" />
+            <SentencesList :sentences="unselectedSentences" :selectable="true" type="add" @select="add" />
             <infinite-loading @infinite="infiniteLoad"></infinite-loading>
           </Card>
         </transition>
@@ -94,6 +94,18 @@ export default {
       } catch(error) {
         this.$store.dispatch('error/setError', error)
       }
+    },
+    add(sentenceId) {
+      // 選択されたIDの例文データを取得
+      const selectedSentence = _.filter(this.userSentences, { id: sentenceId })
+      // 選択済み例文に追加
+      this.selectedSentences.push(selectedSentence[0])
+    },
+    remove(sentenceId) {
+      // 削除対象のインデックス番号を取得
+      const targetIndex = this.selectedSentences.findIndex(item => item.id === sentenceId)
+      // 選択済み例文から除去
+      this.selectedSentences.splice(targetIndex, 1)
     }
   },
   watch: {
