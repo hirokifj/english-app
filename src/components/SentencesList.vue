@@ -1,12 +1,23 @@
 <template>
   <ul class="list">
     <li class="list__item" v-for="sentence in sentences" :key="sentence.id">
-      <router-link class="list__link" :to="{ name: 'senetncesDetail', params: { id: sentence.id } }">
-        <div class="sentence">
-          <span class="sentence__en">{{ sentence.english }}</span>
-          <span class="sentence__ja">{{ sentence.japanese }}</span>
+      <template v-if="selectable">
+        <div class="list__content">
+          <div class="sentence">
+            <span class="sentence__en">{{ sentence.english }}</span>
+            <span class="sentence__ja">{{ sentence.japanese }}</span>
+          </div>
+          <font-awesome-icon :class="iconClass" :icon="iconName" @click="select(sentence.id)" />
         </div>
-      </router-link>
+      </template>
+      <template v-else>
+        <router-link class="list__link" :to="{ name: 'senetncesDetail', params: { id: sentence.id } }">
+          <div class="sentence">
+            <span class="sentence__en">{{ sentence.english }}</span>
+            <span class="sentence__ja">{{ sentence.japanese }}</span>
+          </div>
+        </router-link>
+      </template>
     </li>
   </ul>
 </template>
@@ -14,7 +25,26 @@
 <script>
 export default {
   props: {
-    sentences: Array
+    sentences: Array,
+    selectable: Boolean,
+    type: String
+  },
+  computed: {
+    iconName() {
+      return this.type === 'add' ? 'plus-circle' : 'times-circle'
+    },
+    iconClass() {
+      return {
+        'icon': true,
+        'add-icon': this.type === 'add',
+        'remove-icon': this.type === 'remove'
+      }
+    }
+  },
+  methods: {
+    select(id) {
+      this.$emit('select', id)
+    }
   }
 }
 </script>
@@ -25,14 +55,9 @@ export default {
   &__item {
     min-height: 10rem;
     border: 2px solid $color-line-grey;
-    transition: background-color .4s;
 
     &:not(:last-child) {
       margin-bottom: 2rem;
-    }
-
-    &:hover {
-      background-color: $color-grey-light-1;
     }
   }
 
@@ -41,6 +66,11 @@ export default {
     width: 100%;
     height: 100%;
     padding: 2rem;
+    transition: background-color .4s;
+
+    &:hover {
+      background-color: $color-grey-light-1;
+    }
 
     &:link,
     &:visited {
@@ -48,6 +78,30 @@ export default {
       text-decoration: none;
     }
   }
+
+  &__content {
+    position: relative;
+    padding: 6rem 2rem;
+    @include respond(tab-port) {
+      padding: 4rem 2rem;
+    }
+  }
+}
+
+.icon {
+  font-size: 3.2rem;
+  position: absolute;
+  top: 1.2rem;
+  right: 1rem;
+  cursor: pointer;
+}
+
+.add-icon {
+  color: $color-blue-light;
+}
+
+.remove-icon {
+  color: $color-pink-light;
 }
 
 .sentence {

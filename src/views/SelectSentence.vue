@@ -22,13 +22,13 @@
             <template slot="header">
               <h2>選択中の例文</h2>
             </template>
-            <SentencesList :sentences="selectedSentences" />
+            <SentencesList :sentences="selectedSentences" :selectable="true" type="remove" />
           </Card>
           <Card v-else key="unselected" color="yellow">
             <template slot="header">
               <h2>例文一覧</h2>
             </template>
-            <SentencesList :sentences="unselectedSentences" />
+            <SentencesList :sentences="unselectedSentences" :selectable="true" type="add" />
             <infinite-loading @infinite="infiniteLoad"></infinite-loading>
           </Card>
         </transition>
