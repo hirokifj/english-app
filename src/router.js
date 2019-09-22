@@ -95,6 +95,13 @@ const router = new Router({
       meta: { requireAuth: true }
     },
     {
+      path: '/lists/:id/edit',
+      name: 'listsEdit',
+      props: true,
+      component: () => import(/* webpackChunkName: "edit-list" */ './views/ListEdit.vue'),
+      meta: { requireAuth: true }
+    },
+    {
       path: '/lists/:id',
       name: 'listsDetail',
       props: true,

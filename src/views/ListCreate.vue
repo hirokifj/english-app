@@ -40,6 +40,7 @@
 <script>
 import ErrMsg from '../components/ErrMsg'
 import firebase from 'firebase'
+import { validateList } from '../lib/functions'
 
 export default {
   data() {
@@ -61,7 +62,7 @@ export default {
       // エラーメッセージ初期化
       this.$store.dispatch('error/clearError')
 
-      if(this.validateList()) {
+      if(validateList(this.title, this.isPublic)) {  // バリデーションに問題がない場合
         try {
           // リストの作成
           const list = await firebase.firestore().collection('lists').add({
@@ -78,27 +79,6 @@ export default {
           this.$store.dispatch('error/setError', error)
         }
       }
-    },
-    validateList() {
-      // タイトル入力チェック
-      if(this.title === '') {
-        // Firebase標準のエラー情報に合わせたオブジェクトをstoreに渡す
-        this.$store.dispatch('error/setError', {
-          code: 'required-title-field',
-          message: 'title field is required'
-        })
-        return false
-      }
-      // 公開フラグチェック
-      if(typeof this.isPublic !== 'boolean') {
-        this.$store.dispatch('error/setError', {
-          code: 'invalid-public-field',
-          message: 'public field is not boolean'
-        })
-        return false
-      }
-
-      return true
     }
   }
 }

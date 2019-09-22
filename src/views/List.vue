@@ -6,6 +6,7 @@
       </div>
       <div v-if="isOwner" class="user-menu u-mb-medium">
         <router-link :to="{ name: 'listsSelect', params: id }" class="link-text">例文を選択</router-link>
+        <router-link :to="{ name: 'listsEdit', params: id }" class="link-text">編集</router-link>
       </div>
 
       <Card color="yellow">
