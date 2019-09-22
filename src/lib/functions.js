@@ -1,4 +1,5 @@
 import firebase from 'firebase'
+import store from '../store/'
 
 export const reAuth = async (currentUser, currentEmail, currentPass) => {
   // 再認証処理
@@ -57,4 +58,27 @@ export const fetchListById = id => {
       reject(err)
     })
   })
+}
+
+// リスト登録のバリデーション。バリデーションOKならtrueを返す。
+export const validateList = (title, publicFlg) => {
+  // タイトル入力チェック
+  if(title === '') {
+    // Firebase標準のエラー情報に合わせたオブジェクトをstoreに渡す
+    store.dispatch('error/setError', {
+      code: 'required-title-field',
+      message: 'title field is required'
+    })
+    return false
+  }
+  // 公開フラグチェック
+  if(typeof publicFlg !== 'boolean') {
+    store.dispatch('error/setError', {
+      code: 'invalid-public-field',
+      message: 'public field is not boolean'
+    })
+    return false
+  }
+
+  return true
 }
