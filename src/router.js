@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import Lists from './views/Lists.vue'
 import firebase from 'firebase'
 import store from './store/'
 
@@ -106,6 +107,18 @@ const router = new Router({
       name: 'listsDetail',
       props: true,
       component: () => import(/* webpackChunkName: "detail-list" */ './views/List.vue')
+    },
+    {
+      path: '/lists/',
+      name: 'listsList',
+      component: Lists
+    },
+    {
+      path: '/lists/mylist',
+      name: 'myList',
+      props: true,
+      component: Lists,
+      meta: { requireAuth: true }
     },
   ]
 })
