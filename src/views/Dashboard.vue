@@ -9,6 +9,17 @@
         <router-link :to="{ name: 'listsCreate' }" class="btn btn--yellow btn--small">リスト作成</router-link>
       </div>
       <div class="card-group">
+
+        <Card color="yellow" :white="true">
+          <template slot="header">
+            マイリスト
+          </template>
+          <ListsList :lists="lists" class="u-mb-medium" />
+          <div class="u-center-text">
+            <router-link :to="{ name: 'myList', params: { type: 'mylists' } }" class="btn btn--yellow btn--big">もっと見る</router-link>
+          </div>
+        </Card>
+
         <Card color="green" :white="true">
           <template slot="header">
             登録した例文
@@ -25,25 +36,37 @@
 
 <script>
 import SentencesList from '../components/SentencesList'
+import ListsList from '../components/ListsList'
 import Card from '../components/Card'
 import ErrMsg from '../components/ErrMsg'
-import { fetchUserSentences } from '../lib/functions'
+import { fetchUserSentences, fetchUserLists } from '../lib/functions'
 
 export default {
   async created() {
-    // 例文一覧の取得
-    const sentencesResults = await fetchUserSentences(5, this.loginUser.id)
-    sentencesResults.items.forEach(item => {
-      this.sentences.push(item)
-    })
+    try {
+      // ユーザーのリスト取得
+      const listsResults = await fetchUserLists(5, this.loginUser.id)
+      listsResults.items.forEach(item => {
+        this.lists.push(item)
+      })
+      // 例文一覧の取得
+      const sentencesResults = await fetchUserSentences(5, this.loginUser.id)
+      sentencesResults.items.forEach(item => {
+        this.sentences.push(item)
+      })
+    } catch(error) {
+      this.$store.dispatch('error/setError', error)
+    }
   },
   data() {
     return {
+      lists: [],
       sentences: []
     }
   },
   components: {
     SentencesList,
+    ListsList,
     Card,
     ErrMsg
   },
