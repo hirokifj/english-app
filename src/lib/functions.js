@@ -60,6 +60,43 @@ export const fetchListById = id => {
   })
 }
 
+// リストの一覧を取得する。
+const fetchLists = async query => {
+  // firestoreからデータを取得
+  const snapshot = await query.get()
+
+  return {
+    items: snapshot.docs.map(doc => Object.assign(doc.data(), { id: doc.id })), // ドキュメントIDもデータに含める
+    lastItem: snapshot.docs[snapshot.docs.length - 1]
+  }
+}
+
+// 指定したユーザーのリストの一覧を取得する。
+export const fetchUserLists = async (itemNumber, userId, lastItem) => {
+  // 取得条件を定義
+  let query = firebase.firestore().collection('lists').where('userId', '==', userId)
+  if(lastItem) {
+    query = query.startAfter(lastItem).limit(itemNumber)
+  } else {
+    query = query.limit(itemNumber)
+  }
+
+  return await fetchLists(query)
+}
+
+// 公開されているリストの一覧を取得する。
+export const fetchPublicLists = async (itemNumber, lastItem) => {
+  // 取得条件を定義
+  let query = firebase.firestore().collection('lists').where('isPublic', '==', true)
+  if(lastItem) {
+    query = query.startAfter(lastItem).limit(itemNumber)
+  } else {
+    query = query.limit(itemNumber)
+  }
+
+  return await fetchLists(query)
+}
+
 // リスト登録のバリデーション。バリデーションOKならtrueを返す。
 export const validateList = (title, publicFlg) => {
   // タイトル入力チェック
