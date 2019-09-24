@@ -4,33 +4,35 @@
       <div class="u-center-text u-mb-medium">
         <h1 v-if="list" class="page-title">{{ list.title }}</h1>
       </div>
-      <div v-if="isLearning" key="learning">
+      <transition mode="out-in">
+        <div v-if="isLearning" key="learning">
 
-        <LearningCard v-if="hasSentences" :learningSentences="listSentences" @stop="stopLearning" />
+          <LearningCard v-if="hasSentences" :learningSentences="listSentences" @stop="stopLearning" />
 
-      </div>
-      <div v-else key="detail">
-        <div class="list-menu u-mb-medium">
-          <button v-if="hasSentences" class="btn btn--blue" @click="startLearning">覚える</button>
         </div>
-        <div v-if="isOwner" class="user-menu u-mb-medium">
-          <router-link :to="{ name: 'listsSelect', params: id }" class="link-text">例文を選択</router-link>
-          <router-link :to="{ name: 'listsEdit', params: id }" class="link-text">編集</router-link>
+        <div v-else key="detail">
+          <div class="list-menu u-mb-medium">
+            <button v-if="hasSentences" class="btn btn--blue" @click="startLearning">覚える</button>
+          </div>
+          <div v-if="isOwner" class="user-menu u-mb-medium">
+            <router-link :to="{ name: 'listsSelect', params: id }" class="link-text">例文を選択</router-link>
+            <router-link :to="{ name: 'listsEdit', params: id }" class="link-text">編集</router-link>
+          </div>
+
+          <Card color="yellow" class="u-mb-big">
+            <template slot="header">
+              <h2>リストの例文</h2>
+            </template>
+            <SentencesList :sentences="listSentences" />
+          </Card>
+
+          <ErrMsg class="u-mb-medium" />
+
+          <div v-if="isOwner" class="u-center-text">
+            <button class="btn btn--pink" @click="deleteList">リスト削除</button>
+          </div>
         </div>
-
-        <Card color="yellow" class="u-mb-big">
-          <template slot="header">
-            <h2>リストの例文</h2>
-          </template>
-          <SentencesList :sentences="listSentences" />
-        </Card>
-
-        <ErrMsg class="u-mb-medium" />
-
-        <div v-if="isOwner" class="u-center-text">
-          <button class="btn btn--pink" @click="deleteList">リスト削除</button>
-        </div>
-      </div>
+      </transition>
     </div>
   </main>
 </template>
@@ -159,5 +161,20 @@ export default {
   & a:not(:last-child) {
     margin-right: 2rem;
   }
+}
+
+// リストの詳細表示、例文学習画面の切り替え
+.v-enter-active, .v-leave-active {
+  transition: opacity .4s, transform .6s;
+}
+
+.v-enter {
+  opacity: 0;
+  transform: translateY(-15px)
+}
+
+.v-leave-to {
+  opacity: 0;
+  transform: translateY(-15px)
 }
 </style>
