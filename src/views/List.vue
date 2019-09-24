@@ -2,27 +2,34 @@
   <main class="main u-max-width">
     <div class="u-width-60">
       <div class="u-center-text u-mb-medium">
-          <h1 v-if="list" class="page-title">{{ list.title }}</h1>
+        <h1 v-if="list" class="page-title">{{ list.title }}</h1>
       </div>
-      <div class="list-menu u-mb-medium">
-        <button v-if="hasSentences" class="btn btn--blue" @click="moveToLearningPage">覚える</button>
+      <div v-if="isLearning" key="learning">
+
+        <LearningCard v-if="hasSentences" :learningSentences="listSentences" @stop="stopLearning" />
+
       </div>
-      <div v-if="isOwner" class="user-menu u-mb-medium">
-        <router-link :to="{ name: 'listsSelect', params: id }" class="link-text">例文を選択</router-link>
-        <router-link :to="{ name: 'listsEdit', params: id }" class="link-text">編集</router-link>
-      </div>
+      <div v-else key="detail">
+        <div class="list-menu u-mb-medium">
+          <button v-if="hasSentences" class="btn btn--blue" @click="startLearning">覚える</button>
+        </div>
+        <div v-if="isOwner" class="user-menu u-mb-medium">
+          <router-link :to="{ name: 'listsSelect', params: id }" class="link-text">例文を選択</router-link>
+          <router-link :to="{ name: 'listsEdit', params: id }" class="link-text">編集</router-link>
+        </div>
 
-      <Card color="yellow" class="u-mb-big">
-        <template slot="header">
-          <h2>リストの例文</h2>
-        </template>
-        <SentencesList :sentences="listSentences" />
-      </Card>
+        <Card color="yellow" class="u-mb-big">
+          <template slot="header">
+            <h2>リストの例文</h2>
+          </template>
+          <SentencesList :sentences="listSentences" />
+        </Card>
 
-      <ErrMsg class="u-mb-medium" />
+        <ErrMsg class="u-mb-medium" />
 
-      <div v-if="isOwner" class="u-center-text">
-        <button class="btn btn--pink" @click="deleteList">リスト削除</button>
+        <div v-if="isOwner" class="u-center-text">
+          <button class="btn btn--pink" @click="deleteList">リスト削除</button>
+        </div>
       </div>
     </div>
   </main>
@@ -32,6 +39,7 @@
 import Card from '../components/Card'
 import ErrMsg from '../components/ErrMsg'
 import SentencesList from '../components/SentencesList'
+import LearningCard from '../components/LearningCard'
 import firebase from 'firebase'
 import { fetchListById, getSentenceById } from '../lib/functions'
 
@@ -42,13 +50,15 @@ export default {
   data() {
     return {
       list: null,
-      listSentences: []
+      listSentences: [],
+      isLearning: false // 学習画面の表示管理
     }
   },
   components: {
     Card,
     ErrMsg,
-    SentencesList
+    SentencesList,
+    LearningCard
   },
   computed: {
     loginUser() {
@@ -77,6 +87,12 @@ export default {
       } catch(error) {
         this.$store.dispatch('error/setError', error)
       }
+    },
+    startLearning() {
+      this.isLearning = true
+    },
+    stopLearning() {
+      this.isLearning = false
     }
   },
   watch: {
