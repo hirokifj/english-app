@@ -1,13 +1,13 @@
 <template>
-  <div class="learning-card">
+  <div class="learning-card" @click="isShowJapanese = !isShowJapanese">
     <transition :name="transitionType" mode="out-in">
       <div :key="currentNum">
         <span class="english">{{ currentSentence.english }}</span>
-        <span class="japanese">{{ currentSentence.japanese }}</span>
+        <span v-if="isShowJapanese" class="japanese">{{ currentSentence.japanese }}</span>
       </div>
     </transition>
-    <font-awesome-icon v-if="canPrevious" class="icon icon--previous" icon="arrow-alt-circle-left" @click="previous" />
-    <font-awesome-icon v-if="canNext" class="icon icon--next" icon="arrow-alt-circle-right" @click="next" />
+    <font-awesome-icon v-if="canPrevious" class="icon icon--previous" icon="arrow-alt-circle-left" @click.stop="previous" />
+    <font-awesome-icon v-if="canNext" class="icon icon--next" icon="arrow-alt-circle-right" @click.stop="next" />
   </div>
 </template>
 
@@ -20,6 +20,7 @@ export default {
     return {
       currentNum: 0,
       transitionType: 'next',
+      isShowJapanese: false
     }
   },
   computed: {
@@ -36,10 +37,16 @@ export default {
   methods: {
     next() {
       this.transitionType = 'next'
+      // 例文切り替え前に、日本語訳を非表示にする
+      this.isShowJapanese = false
+
       this.currentNum++
     },
     previous() {
       this.transitionType = 'previous'
+      // 例文切り替え前に、日本語訳を非表示にする
+      this.isShowJapanese = false
+
       this.currentNum--
     }
   }
@@ -52,6 +59,7 @@ export default {
   border: 2px solid $color-line-grey;
   border-radius: 5px;
   padding: 4rem 2rem;
+  cursor: pointer
 }
 
 .english {
