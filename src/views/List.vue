@@ -5,7 +5,7 @@
           <h1 v-if="list" class="page-title">{{ list.title }}</h1>
       </div>
       <div class="list-menu u-mb-medium">
-        <button class="btn btn--blue">覚える</button>
+        <button v-if="hasSentences" class="btn btn--blue" @click="moveToLearningPage">覚える</button>
       </div>
       <div v-if="isOwner" class="user-menu u-mb-medium">
         <router-link :to="{ name: 'listsSelect', params: id }" class="link-text">例文を選択</router-link>
@@ -60,6 +60,9 @@ export default {
       } else {
         return false
       }
+    },
+    hasSentences() {
+      return this.listSentences.length > 0
     }
   },
   methods: {
