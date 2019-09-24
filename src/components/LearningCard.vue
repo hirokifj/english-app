@@ -1,7 +1,11 @@
 <template>
   <div class="learning-card">
-    <span class="english">{{ currentSentence.english }}</span>
-    <span class="japanese">{{ currentSentence.japanese }}</span>
+    <transition :name="transitionType" mode="out-in">
+      <div :key="currentNum">
+        <span class="english">{{ currentSentence.english }}</span>
+        <span class="japanese">{{ currentSentence.japanese }}</span>
+      </div>
+    </transition>
     <font-awesome-icon v-if="canPrevious" class="icon icon--previous" icon="arrow-alt-circle-left" @click="previous" />
     <font-awesome-icon v-if="canNext" class="icon icon--next" icon="arrow-alt-circle-right" @click="next" />
   </div>
@@ -14,7 +18,8 @@ export default {
   },
   data() {
     return {
-      currentNum: 0
+      currentNum: 0,
+      transitionType: 'next',
     }
   },
   computed: {
@@ -30,9 +35,11 @@ export default {
   },
   methods: {
     next() {
+      this.transitionType = 'next'
       this.currentNum++
     },
     previous() {
+      this.transitionType = 'previous'
       this.currentNum--
     }
   }
@@ -74,5 +81,32 @@ export default {
   &--next {
     right: 1.5rem;
   }
+}
+
+// 例文切り替えのtransition
+.next-enter-active, .next-leave-active,
+.previous-enter-active, .previous-leave-active {
+  transition: opacity .2s, transform .4s;
+}
+
+.next-enter, .next-leave-to,
+.previous-enter, .previous-leave-to {
+  opacity: 0;
+}
+
+.next-enter {
+  transform: translateX(15px)
+}
+
+.next-leave-to {
+  transform: translateX(-15px)
+}
+
+.previous-enter {
+  transform: translateX(-15px)
+}
+
+.previous-leave-to {
+  transform: translateX(15px)
 }
 </style>
