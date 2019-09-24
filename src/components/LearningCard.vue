@@ -1,15 +1,20 @@
 <template>
-  <div class="learning-card" @click="isShowJapanese = !isShowJapanese">
-    <transition :name="transitionType" mode="out-in">
-      <div :key="currentNum">
-        <span class="english">{{ currentSentence.english }}</span>
-        <transition name="ja">
-          <span v-if="isShowJapanese" class="japanese">{{ currentSentence.japanese }}</span>
-        </transition>
-      </div>
-    </transition>
-    <font-awesome-icon v-if="canPrevious" class="icon icon--previous" icon="arrow-alt-circle-left" @click.stop="previous" />
-    <font-awesome-icon v-if="canNext" class="icon icon--next" icon="arrow-alt-circle-right" @click.stop="next" />
+  <div class="card-wrap">
+    <div class="learning-card" @click="isShowJapanese = !isShowJapanese">
+      <transition :name="transitionType" mode="out-in">
+        <div :key="currentNum">
+          <span class="english">{{ currentSentence.english }}</span>
+          <transition name="ja">
+            <span v-if="isShowJapanese" class="japanese">{{ currentSentence.japanese }}</span>
+          </transition>
+        </div>
+      </transition>
+      <font-awesome-icon v-if="canPrevious" class="icon icon--previous" icon="arrow-alt-circle-left" @click.stop="previous" />
+      <font-awesome-icon v-if="canNext" class="icon icon--next" icon="arrow-alt-circle-right" @click.stop="next" />
+    </div>
+    <div class="u-center-text">
+      <button class="btn btn--yellow btn--big" @click="stopLearning">終了</button>
+    </div>
   </div>
 </template>
 
@@ -50,6 +55,9 @@ export default {
       this.isShowJapanese = false
 
       this.currentNum--
+    },
+    stopLearning() {
+      this.$emit('stop')
     }
   }
 }
@@ -61,7 +69,8 @@ export default {
   border: 2px solid $color-line-grey;
   border-radius: 5px;
   padding: 4rem 2rem;
-  cursor: pointer
+  cursor: pointer;
+  margin-bottom: 12rem;
 }
 
 .english {
