@@ -4,6 +4,9 @@
       <div class="u-center-text u-mb-medium">
           <h1 v-if="list" class="page-title">{{ list.title }}</h1>
       </div>
+      <div class="list-menu u-mb-medium">
+        <button class="btn btn--blue">覚える</button>
+      </div>
       <div v-if="isOwner" class="user-menu u-mb-medium">
         <router-link :to="{ name: 'listsSelect', params: id }" class="link-text">例文を選択</router-link>
         <router-link :to="{ name: 'listsEdit', params: id }" class="link-text">編集</router-link>
@@ -122,6 +125,11 @@ export default {
   font-weight: bold;
   font-size: 2rem;
   letter-spacing: 1px;
+}
+
+.list-menu {
+  display: flex;
+  justify-content: center;
 }
 
 .user-menu {
