@@ -3,7 +3,9 @@
     <transition :name="transitionType" mode="out-in">
       <div :key="currentNum">
         <span class="english">{{ currentSentence.english }}</span>
-        <span v-if="isShowJapanese" class="japanese">{{ currentSentence.japanese }}</span>
+        <transition name="ja">
+          <span v-if="isShowJapanese" class="japanese">{{ currentSentence.japanese }}</span>
+        </transition>
       </div>
     </transition>
     <font-awesome-icon v-if="canPrevious" class="icon icon--previous" icon="arrow-alt-circle-left" @click.stop="previous" />
@@ -70,6 +72,7 @@ export default {
 
 .japanese {
   font-size: 14px;
+  display: inline-block;
 }
 
 .icon {
@@ -116,5 +119,20 @@ export default {
 
 .previous-leave-to {
   transform: translateX(15px)
+}
+
+// 日本語訳の表示transition
+.ja-enter-active, .ja-leave-active {
+  transition: opacity .4s, transform .6s;
+}
+
+.ja-enter {
+  opacity: .2;
+  transform: translateY(-15px)
+}
+
+.ja-leave-to {
+  opacity: 0;
+  transform: translateY(-15px)
 }
 </style>
