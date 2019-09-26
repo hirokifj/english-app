@@ -84,7 +84,7 @@ const router = new Router({
     {
       path: '/lists/mylist',
       name: 'myList',
-      props: true,
+      props: { type: 'mylists' },
       component: Lists,
       meta: { requireAuth: true }
     },

@@ -16,7 +16,7 @@
           </template>
           <ListsList :lists="lists" class="u-mb-medium" />
           <div class="u-center-text">
-            <router-link :to="{ name: 'myList', params: { type: 'mylists' } }" class="btn btn--yellow btn--big">もっと見る</router-link>
+            <router-link :to="{ name: 'myList' }" class="btn btn--yellow btn--big">もっと見る</router-link>
           </div>
         </Card>
 
