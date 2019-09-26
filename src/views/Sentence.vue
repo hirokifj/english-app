@@ -54,7 +54,11 @@ export default {
       return this.$store.state.user.loginUser
     },
     canEdit() {
-      return this.loginUser.id === this.sentence.userId
+      if(this.loginUser && this.sentence) {
+        return this.loginUser.id === this.sentence.userId
+      } else {
+        return false
+      }
     }
   },
   methods: {
