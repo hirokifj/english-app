@@ -53,7 +53,7 @@ export const fetchListById = id => {
     const listRef = firebase.firestore().collection('lists').doc(id)
 
     listRef.get().then(doc => {
-      resolve(Object.assign(doc.data(), { id: doc.id }) || false)
+      resolve(doc.exists ? Object.assign(doc.data(), { id: doc.id }) : false)
     }).catch(err => {
       reject(err)
     })
