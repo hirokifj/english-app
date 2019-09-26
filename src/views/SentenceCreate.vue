@@ -38,6 +38,7 @@
 <script>
 import ErrMsg from '../components/ErrMsg'
 import firebase from 'firebase'
+import { validateSentence } from '../lib/functions'
 
 export default {
   data() {
@@ -59,18 +60,20 @@ export default {
       // エラーメッセージ初期化
       this.$store.dispatch('error/clearError')
 
-      try {
-        // 例文の登録
-        const sentence = await firebase.firestore().collection('sentences').add({
-          userId: this.loginUser.id,
-          english: this.english,
-          japanese: this.japanese,
-          createdAt: new Date()
-        })
-        // 詳細ページへリダイレクト
-        this.$router.push({ name: 'senetncesDetail', params: { id: sentence.id } })
-      } catch(error) {
-        this.$store.dispatch('error/setError', error)
+      if(validateSentence(this.english, this.japanese)) {  // バリデーションに問題がない場合
+        try {
+          // 例文の登録
+          const sentence = await firebase.firestore().collection('sentences').add({
+            userId: this.loginUser.id,
+            english: this.english,
+            japanese: this.japanese,
+            createdAt: new Date()
+          })
+          // 詳細ページへリダイレクト
+          this.$router.push({ name: 'senetncesDetail', params: { id: sentence.id } })
+        } catch(error) {
+          this.$store.dispatch('error/setError', error)
+        }
       }
     }
   }
