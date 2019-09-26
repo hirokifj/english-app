@@ -72,8 +72,7 @@ const router = new Router({
       path: '/sentences/:id',
       name: 'senetncesDetail',
       props: true,
-      component: () => import(/* webpackChunkName: "detail-sentence" */ './views/Sentence.vue'),
-      meta: { requireAuth: true }
+      component: () => import(/* webpackChunkName: "detail-sentence" */ './views/Sentence.vue')
     },
     {
       path: '/sentences/',
