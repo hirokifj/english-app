@@ -74,7 +74,7 @@ const fetchLists = async query => {
 // 指定したユーザーのリストの一覧を取得する。
 export const fetchUserLists = async (itemNumber, userId, lastItem) => {
   // 取得条件を定義
-  let query = firebase.firestore().collection('lists').where('userId', '==', userId)
+  let query = firebase.firestore().collection('lists').where('userId', '==', userId).orderBy('createdAt', 'desc')
   if(lastItem) {
     query = query.startAfter(lastItem).limit(itemNumber)
   } else {
@@ -87,7 +87,7 @@ export const fetchUserLists = async (itemNumber, userId, lastItem) => {
 // 公開されているリストの一覧を取得する。
 export const fetchPublicLists = async (itemNumber, lastItem) => {
   // 取得条件を定義
-  let query = firebase.firestore().collection('lists').where('isPublic', '==', true)
+  let query = firebase.firestore().collection('lists').where('isPublic', '==', true).orderBy('createdAt', 'desc')
   if(lastItem) {
     query = query.startAfter(lastItem).limit(itemNumber)
   } else {
