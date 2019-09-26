@@ -123,6 +123,10 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
+  // ページ遷移前にエラーメッセージをクリア
+  store.dispatch('error/clearError')
+
+  // ユーザーの認証チェック
   if(to.matched.some(record => record.meta.requireAuth)) {
     firebase.auth().onAuthStateChanged(async user => {
       if(user) {
