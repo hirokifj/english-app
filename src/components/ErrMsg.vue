@@ -49,6 +49,12 @@ export default {
           case 'required-title-field':
             errMsg = 'タイトルを入力してください。'
             break
+          case 'required-english-field':
+            errMsg = '英文を入力してください。'
+            break
+          case 'required-japanese-field':
+            errMsg = '日本語訳を入力してください。'
+            break
           default:
             errMsg = '処理に失敗しました。時間をおいて再度お試しください。'
             break
