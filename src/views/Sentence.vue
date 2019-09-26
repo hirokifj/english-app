@@ -22,7 +22,7 @@
         </dl>
       </Card>
 
-      <div v-if="canEdit" class="btn-group">
+      <div v-if="isOwner" class="btn-group">
         <router-link class="btn btn--yellow" :to="{ name: 'senetncesEdit', params: { id: id } }">編集</router-link>
         <button class="btn btn--pink" @click="deleteItem">削除</button>
       </div>
@@ -53,7 +53,7 @@ export default {
     loginUser() {
       return this.$store.state.user.loginUser
     },
-    canEdit() {
+    isOwner() {
       if(this.loginUser && this.sentence) {
         return this.loginUser.id === this.sentence.userId
       } else {
