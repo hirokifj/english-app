@@ -36,7 +36,7 @@
 <script>
 import ErrMsg from '../components/ErrMsg'
 import firebase from 'firebase'
-import { getSentenceById } from '../lib/functions'
+import { fetchSentenceById } from '../lib/functions'
 
 export default {
   props: {
@@ -79,7 +79,7 @@ export default {
       async handler() {
         try {
           //例文情報を取得
-          const sentenceData = await getSentenceById(this.id)
+          const sentenceData = await fetchSentenceById(this.id)
 
           if(sentenceData && this.loginUser.id === sentenceData.userId) {
             this.english = sentenceData.english

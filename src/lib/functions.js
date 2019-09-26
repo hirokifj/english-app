@@ -11,7 +11,7 @@ export const reAuth = async (currentUser, currentEmail, currentPass) => {
 }
 
 // 例文データの取得。見つからない場合はfalseを返す。
-export const getSentenceById = id => {
+export const fetchSentenceById = id => {
   return new Promise((resolve, reject) => {
     const sentenceRef = firebase.firestore().collection('sentences').doc(id)
 

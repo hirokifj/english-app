@@ -41,7 +41,7 @@
 import Card from '../components/Card'
 import ErrMsg from '../components/ErrMsg'
 import SentencesList from '../components/SentencesList'
-import { fetchUserSentences, fetchListById, getSentenceById } from '../lib/functions'
+import { fetchUserSentences, fetchListById, fetchSentenceById } from '../lib/functions'
 import _ from 'lodash'
 import firebase from 'firebase'
 
@@ -147,7 +147,7 @@ export default {
       try {
         // 選択されている例文のデータを取得
         this.list.sentences.forEach(async sentenceId => {
-          const sentence = await getSentenceById(sentenceId)
+          const sentence = await fetchSentenceById(sentenceId)
           if(sentence) { // 例文データがある場合のみdataに格納する。
             this.selectedSentences.push(sentence)
           }

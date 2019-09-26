@@ -43,7 +43,7 @@ import ErrMsg from '../components/ErrMsg'
 import SentencesList from '../components/SentencesList'
 import LearningCard from '../components/LearningCard'
 import firebase from 'firebase'
-import { fetchListById, getSentenceById } from '../lib/functions'
+import { fetchListById, fetchSentenceById } from '../lib/functions'
 
 export default {
   props: {
@@ -121,7 +121,7 @@ export default {
       try {
         // 選択されている例文のデータを取得
         this.list.sentences.forEach(async sentenceId => {
-          const sentence = await getSentenceById(sentenceId)
+          const sentence = await fetchSentenceById(sentenceId)
           if(sentence) { // 例文データがある場合のみdataに格納する。
             this.listSentences.push(sentence)
           }
