@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import ErrMsg from '../components/ErrMsg'
 import firebase from 'firebase'
 import { reAuth } from '../lib/functions'
 
@@ -42,6 +43,9 @@ export default {
       password: '',
       newEmail: ''
     }
+  },
+  components: {
+    ErrMsg
   },
   computed: {
     loginUser() {
