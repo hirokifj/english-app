@@ -12,12 +12,14 @@
           <div class="form__group">
             <label for="en" class="form__label">
               <span class="label-text">英文</span>
+              <span class="form__required-badge">必須</span>
             </label>
             <input id="en" type="text" class="form__input" v-model="english">
           </div>
           <div class="form__group">
             <label for="ja" class="form__label">
               <span class="label-text">日本語訳</span>
+              <span class="form__required-badge">必須</span>
             </label>
             <input id="ja" type="text" class="form__input" v-model="japanese">
           </div>
