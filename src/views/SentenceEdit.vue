@@ -12,12 +12,14 @@
           <div class="form__group">
             <label for="en" class="form__label">
               <span class="label-text">英文</span>
+              <span class="form__required-badge">必須</span>
             </label>
             <input id="en" type="text" class="form__input" v-model="english">
           </div>
           <div class="form__group">
             <label for="ja" class="form__label">
               <span class="label-text">日本語訳</span>
+              <span class="form__required-badge">必須</span>
             </label>
             <input id="ja" type="text" class="form__input" v-model="japanese">
           </div>
@@ -36,7 +38,7 @@
 <script>
 import ErrMsg from '../components/ErrMsg'
 import firebase from 'firebase'
-import { fetchSentenceById } from '../lib/functions'
+import { fetchSentenceById, validateSentence } from '../lib/functions'
 
 export default {
   props: {
@@ -61,16 +63,18 @@ export default {
       // エラーメッセージ初期化
       this.$store.dispatch('error/clearError')
 
-      try {
-        // 例文の更新
-        await firebase.firestore().collection('sentences').doc(this.id).update({
-          english: this.english,
-          japanese: this.japanese
-        })
-        // 詳細ページへリダイレクト
-        this.$router.push({ name: 'senetncesDetail', params: { id: this.id } })
-      } catch(error) {
-        this.$store.dispatch('error/setError', error)
+      if(validateSentence(this.english, this.japanese)) {  // バリデーションに問題がない場合
+        try {
+          // 例文の更新
+          await firebase.firestore().collection('sentences').doc(this.id).update({
+            english: this.english,
+            japanese: this.japanese
+          })
+          // 詳細ページへリダイレクト
+          this.$router.push({ name: 'senetncesDetail', params: { id: this.id } })
+        } catch(error) {
+          this.$store.dispatch('error/setError', error)
+        }
       }
     }
   },

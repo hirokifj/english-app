@@ -121,3 +121,25 @@ export const validateList = (title, publicFlg) => {
 
   return true
 }
+
+// 例文登録のバリデーション。バリデーションOKならtrueを返す。
+export const validateSentence = (english, japanese) => {
+  // 英語文入力チェック
+  if(english === '') {
+    store.dispatch('error/setError', {
+      code: 'required-english-field',
+      message: 'english field is required'
+    })
+    return false
+  }
+  // 日本語訳入力チェック
+  if(japanese === '') {
+    store.dispatch('error/setError', {
+      code: 'required-japanese-field',
+      message: 'japanese field is required'
+    })
+    return false
+  }
+
+  return true
+}
