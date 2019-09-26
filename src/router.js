@@ -82,6 +82,13 @@ const router = new Router({
       meta: { requireAuth: true }
     },
     {
+      path: '/lists/mylist',
+      name: 'myList',
+      props: true,
+      component: Lists,
+      meta: { requireAuth: true }
+    },
+    {
       path: '/lists/create',
       name: 'listsCreate',
       component: () => import(/* webpackChunkName: "create-list" */ './views/ListCreate.vue'),
@@ -111,13 +118,6 @@ const router = new Router({
       path: '/lists/',
       name: 'listsList',
       component: Lists
-    },
-    {
-      path: '/lists/mylist',
-      name: 'myList',
-      props: true,
-      component: Lists,
-      meta: { requireAuth: true }
     },
   ]
 })
