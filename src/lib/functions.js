@@ -30,11 +30,13 @@ export const fetchUserSentences = async (itemNumber, userId, lastItem) => {
   if(lastItem) {
     query = firebase.firestore().collection('sentences')
       .where('userId', '==', userId)
+      .orderBy('createdAt', 'desc')
       .startAfter(lastItem)
       .limit(itemNumber)
   } else {
     query = firebase.firestore().collection('sentences')
       .where('userId', '==', userId)
+      .orderBy('createdAt', 'desc')
       .limit(itemNumber)
   }
 
