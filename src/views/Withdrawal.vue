@@ -16,7 +16,7 @@
             <input id="password" type="password" class="form__input" v-model="password">
           </div>
           <div class="form__btn u-center-text">
-            <button class="btn btn--big btn--pink">
+            <button class="btn btn--big btn--pink" @click.prevent="deleteUserDatas">
               退会
             </button>
           </div>
@@ -32,6 +32,8 @@
 
 <script>
 import ErrMsg from '../components/ErrMsg'
+import firebase from 'firebase'
+import { reAuth, fetchUserSentences, fetchUserLists } from '../lib/functions'
 
 export default {
   data() {
@@ -48,6 +50,76 @@ export default {
       return this.$store.state.user.loginUser
     }
   },
+  methods: {
+    async deleteUserDatas() {
+      // エラーメッセージ初期化
+      this.$store.dispatch('error/clearError')
+
+      this.isProcessing = true
+
+      try {
+        // ユーザー情報を取得
+        const user = firebase.auth().currentUser
+        // 再認証処理
+        await reAuth(user, this.loginUser.email, this.password)
+
+        // 退会処理開始
+
+        // ユーザーに紐付くデータを取得
+        const userSentences = await fetchUserSentences('all', this.loginUser.id)
+        const userLists = await fetchUserLists('all', this.loginUser.id)
+
+        // 削除処理を準備。
+        // Promise.allで処理するため、削除処理を配列に格納する。
+        let deleteUserDatasPromises = []
+
+        // 例文の削除処理を配列に追加
+        if(userSentences.items.length > 0) {
+          userSentences.items.forEach(sentence => {
+            const deleteSentencePromise  = new Promise((resolve, reject) => {
+              firebase.firestore().collection('sentences').doc(sentence.id).delete()
+                .then(() => {
+                  resolve(true)
+                })
+                .catch((err) => {
+                  reject(err)
+                })
+            })
+            deleteUserDatasPromises.push(deleteSentencePromise)
+          })
+        }
+        // リストの削除処理を配列に追加
+        if(userLists.items.length > 0) {
+          userLists.items.forEach(list => {
+            const deleteListPromise  = new Promise((resolve, reject) => {
+              firebase.firestore().collection('lists').doc(list.id).delete()
+                .then(() => {
+                  resolve(true)
+                })
+                .catch((err) => {
+                  reject(err)
+                })
+            })
+            deleteUserDatasPromises.push(deleteListPromise)
+          })
+        }
+
+        // ユーザーに紐付くデータの削除（削除対象が存在する場合）
+        if(deleteUserDatasPromises.length > 0) {
+          await Promise.all(deleteUserDatasPromises)
+        }
+
+        // ユーザーの削除。削除完了後、onAuthStateChangedによりリダイレクト。
+        await user.delete()
+
+        // storeのログインユーザー情報をクリア
+        this.$store.dispatch('user/clearLoginUser')
+      } catch(error) {
+        this.$store.dispatch('error/setError', error)
+        this.isProcessing = false
+      }
+    }
+  }
 }
 </script>
 
