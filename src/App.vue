@@ -3,7 +3,7 @@
     <div class="container">
       <Header />
       <router-view/>
-      <Footer />
+      <Footer class="footer-mt" />
       <FooterNav />
     </div>
   </div>
@@ -59,6 +59,13 @@ body {
 .container {
 	max-width: 100%;
 	margin: 0 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.footer-mt {
+  margin-top: auto;
 }
 
 .link-text {
