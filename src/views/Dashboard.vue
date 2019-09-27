@@ -10,6 +10,16 @@
       </div>
       <div class="card-group">
 
+        <Card color="pink" :white="true">
+          <template slot="header">
+            お気に入りリスト
+          </template>
+          <ListsList :lists="likeLists" class="u-mb-medium" />
+          <div class="u-center-text">
+            <router-link :to="{ name: 'likeList' }" class="btn btn--pink btn--big">もっと見る</router-link>
+          </div>
+        </Card>
+
         <Card color="yellow" :white="true">
           <template slot="header">
             マイリスト
@@ -39,11 +49,16 @@ import SentencesList from '../components/SentencesList'
 import ListsList from '../components/ListsList'
 import Card from '../components/Card'
 import ErrMsg from '../components/ErrMsg'
-import { fetchUserSentences, fetchUserLists } from '../lib/functions'
+import { fetchUserSentences, fetchUserLists, fetchUserLikeLists } from '../lib/functions'
 
 export default {
   async created() {
     try {
+      // お気に入りリスト取得
+      const likeListsResults = await fetchUserLikeLists(5, this.loginUser.id)
+      likeListsResults.items.forEach(item => {
+        this.likeLists.push(item)
+      })
       // ユーザーのリスト取得
       const listsResults = await fetchUserLists(5, this.loginUser.id)
       listsResults.items.forEach(item => {
@@ -60,6 +75,7 @@ export default {
   },
   data() {
     return {
+      likeLists: [],
       lists: [],
       sentences: []
     }
