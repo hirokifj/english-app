@@ -33,7 +33,7 @@
 <script>
 import ErrMsg from '../components/ErrMsg'
 import firebase from 'firebase'
-import { reAuth, fetchUserSentences, fetchUserLists } from '../lib/functions'
+import { reAuth, fetchUserSentences, fetchUserLists, fetchUserLikes } from '../lib/functions'
 
 export default {
   data() {
@@ -68,6 +68,7 @@ export default {
         // ユーザーに紐付くデータを取得
         const userSentences = await fetchUserSentences('all', this.loginUser.id)
         const userLists = await fetchUserLists('all', this.loginUser.id)
+        const userLikes = await fetchUserLikes('all', this.loginUser.id)
 
         // 削除処理を準備。
         // Promise.allで処理するため、削除処理を配列に格納する。
@@ -101,6 +102,21 @@ export default {
                 })
             })
             deleteUserDatasPromises.push(deleteListPromise)
+          })
+        }
+        // likeリストの削除処理を配列に追加
+        if(userLikes.items.length > 0) {
+          userLikes.items.forEach(like => {
+            const deleteLikePromise  = new Promise((resolve, reject) => {
+              firebase.firestore().collection('likes').doc(like.id).delete()
+                .then(() => {
+                  resolve(true)
+                })
+                .catch((err) => {
+                  reject(err)
+                })
+            })
+            deleteUserDatasPromises.push(deleteLikePromise)
           })
         }
 
