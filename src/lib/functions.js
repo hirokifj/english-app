@@ -106,6 +106,21 @@ export const fetchPublicLists = async (itemNumber, lastItem) => {
   return await fetchLists(query)
 }
 
+// likeコレクションのドキュメントIDを取得する。データがなければfalseを返す。
+export const fetchLikeId = async (userId, listId) => {
+  const likeSanpshot = await firebase.firestore().collection('likes')
+    .where('userId', '==', userId)
+    .where('listId', '==', listId)
+    .get()
+
+  // 該当するドキュメントがあった場合は、ドキュメントIDを返却
+  if(likeSanpshot.docs.length > 0) {
+    return likeSanpshot.docs[0].id
+  } else {
+    return false
+  }
+}
+
 // リスト登録のバリデーション。バリデーションOKならtrueを返す。
 export const validateList = (title, publicFlg) => {
   // タイトル入力チェック
