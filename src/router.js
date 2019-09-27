@@ -32,6 +32,12 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "reset" */ './views/PasswordReset.vue')
     },
     {
+      path: '/withdrawal',
+      name: 'withdrawal',
+      component: () => import(/* webpackChunkName: "withdrawal" */ './views/Withdrawal.vue'),
+      meta: { requireAuth: true }
+    },
+    {
       path: '/dashboard',
       name: 'dashboard',
       component: () => import(/* webpackChunkName: "dashboard" */ './views/Dashboard.vue'),
