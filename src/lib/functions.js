@@ -106,6 +106,22 @@ export const fetchPublicLists = async (itemNumber, lastItem) => {
   return await fetchLists(query)
 }
 
+// like数の多い順にリスト一覧取得する。（likeCountが6以上のみ取得）
+export const fetchListsOrderByLike = async (itemNumber, lastItem) => {
+  // 取得条件を定義
+  let query = firebase.firestore().collection('lists')
+    .where('isPublic', '==', true)
+    .where('likeCount', '>', 5)
+    .orderBy('likeCount', 'desc')
+  if(lastItem) {
+    query = query.startAfter(lastItem).limit(itemNumber)
+  } else {
+    query = query.limit(itemNumber)
+  }
+
+  return await fetchLists(query)
+}
+
 // likeコレクションのドキュメントIDを取得する。データがなければfalseを返す。
 export const fetchLikeId = async (userId, listId) => {
   const likeSanpshot = await firebase.firestore().collection('likes')

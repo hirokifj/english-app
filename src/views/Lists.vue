@@ -8,7 +8,7 @@
       <ErrMsg class="u-mb-medium" />
 
       <Card>
-        <ListsList :lists="lists" />
+        <ListsList :lists="lists" :isShowLikeCount="this.type === 'ranking'" />
         <infinite-loading @infinite="infiniteLoad"></infinite-loading>
       </Card>
 
@@ -20,7 +20,7 @@
 import Card from '../components/Card'
 import ErrMsg from '../components/ErrMsg'
 import ListsList from '../components/ListsList'
-import { fetchUserLists, fetchPublicLists, fetchUserLikeLists } from '../lib/functions'
+import { fetchUserLists, fetchPublicLists, fetchUserLikeLists, fetchListsOrderByLike } from '../lib/functions'
 
 export default {
   props: {
@@ -41,6 +41,8 @@ export default {
         return 'マイリスト'
       } else if(this.type === 'likeLists') {
         return 'お気に入り一覧'
+      } else if(this.type === 'ranking') {
+        return 'お気に入りランキング'
       } else {
         return 'リスト一覧'
       }
@@ -59,7 +61,9 @@ export default {
           results = await fetchUserLists(30, this.loginUser.id, this.lastItem)
         } else if(this.type === 'likeLists') {
           results = await fetchUserLikeLists(30, this.loginUser.id, this.lastItem)
-        } else {
+        } else if(this.type === 'ranking') {
+          results = await fetchListsOrderByLike(30, this.lastItem)
+        }else {
           results = await fetchPublicLists(30, this.lastItem)
         }
 

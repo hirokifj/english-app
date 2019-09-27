@@ -2,7 +2,12 @@
   <ul class="list">
     <li class="list__item" v-for="list in lists" :key="list.id">
       <router-link class="list__link" :to="{ name: 'listsDetail', params: { id: list.id } }">
-        <span class="list-title">{{ list.title }}</span>
+        <div class="list__content">
+          <div v-if="isShowLikeCount" class="like-count">
+            <span class="num">{{ list.likeCount }}</span><font-awesome-icon class="icon" :icon="['fas', 'heart']" />
+          </div>
+          <span class="list-title">{{ list.title }}</span>
+        </div>
       </router-link>
     </li>
   </ul>
@@ -11,7 +16,8 @@
 <script>
 export default {
   props: {
-    lists: Array
+    lists: Array,
+    isShowLikeCount: Boolean
   },
 }
 </script>
@@ -42,6 +48,20 @@ export default {
       color: $color-dark;
       text-decoration: none;
     }
+  }
+}
+
+.like-count {
+  display: block;
+  color: $color-pink;
+  margin-bottom: 1.6rem;
+  line-height: 1;
+
+  & .num {
+    font-size: 2rem;
+    font-weight: bold;
+    display: inline-block;
+    margin-right: .8rem;
   }
 }
 

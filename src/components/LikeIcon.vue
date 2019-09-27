@@ -45,15 +45,25 @@ export default {
 
         // like済みの場合
         if(this.likeId) {
+          // likesコレクションからドキュメントを削除
           await firebase.firestore().collection('likes').doc(this.likeId).delete()
+          // リストのlikeCountを減算
+          await firebase.firestore().collection('lists').doc(this.listId).update({
+            likeCount: firebase.firestore.FieldValue.increment(-1)
+          })
           this.likeId = ''
 
         // まだlikeされていない場合
         } else {
+          // likesコレクションにドキュメントを追加
           const like = await firebase.firestore().collection('likes').add({
             userId: this.userId,
             listId: this.listId,
             createdAt: new Date()
+          })
+          // リストのlikeCountを加算
+          await firebase.firestore().collection('lists').doc(this.listId).update({
+            likeCount: firebase.firestore.FieldValue.increment(1)
           })
           this.likeId = like.id
         }
