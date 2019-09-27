@@ -20,7 +20,7 @@
 import Card from '../components/Card'
 import ErrMsg from '../components/ErrMsg'
 import ListsList from '../components/ListsList'
-import { fetchUserLists, fetchPublicLists } from '../lib/functions'
+import { fetchUserLists, fetchPublicLists, fetchUserLikeLists, fetchUserLikeListIds } from '../lib/functions'
 
 export default {
   props: {
@@ -39,6 +39,8 @@ export default {
     listsType() {
       if(this.type === 'mylists') {
         return 'mylists'
+      } else if(this.type === 'likeLists') {
+        return 'likes'
       } else {
         return 'public'
       }
@@ -46,6 +48,8 @@ export default {
     pageTitle() {
       if(this.listsType === 'mylists') {
         return 'マイリスト'
+      } else if(this.type === 'likeLists') {
+        return 'お気に入り一覧'
       } else {
         return 'リスト一覧'
       }
@@ -62,6 +66,8 @@ export default {
         let results
         if(this.listsType === 'mylists') {
           results = await fetchUserLists(30, this.loginUser.id, this.lastItem)
+        } else if(this.listsType === 'likes') {
+          results = await fetchUserLikeLists(30, this.loginUser.id, this.lastItem)
         } else {
           results = await fetchPublicLists(30, this.lastItem)
         }
