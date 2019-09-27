@@ -19,6 +19,7 @@
           ログアウト
         </button>
         <router-link :to="{ name: 'passedit' }" class="btn btn--green">パスワード変更</router-link>
+        <router-link :to="{ name: 'withdrawal' }" class="btn btn--pink">退会</router-link>
       </div>
 
     </div>

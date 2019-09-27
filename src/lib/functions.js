@@ -27,7 +27,10 @@ export const fetchSentenceById = id => {
 export const fetchUserSentences = async (itemNumber, userId, lastItem) => {
 
   let query
-  if(lastItem) {
+  if(itemNumber === 'all') {
+    query = firebase.firestore().collection('sentences')
+      .where('userId', '==', userId)
+  } else if(lastItem) {
     query = firebase.firestore().collection('sentences')
       .where('userId', '==', userId)
       .orderBy('createdAt', 'desc')
@@ -76,13 +79,17 @@ const fetchLists = async query => {
 // 指定したユーザーのリストの一覧を取得する。
 export const fetchUserLists = async (itemNumber, userId, lastItem) => {
   // 取得条件を定義
-  let query = firebase.firestore().collection('lists').where('userId', '==', userId).orderBy('createdAt', 'desc')
-  if(lastItem) {
-    query = query.startAfter(lastItem).limit(itemNumber)
-  } else {
-    query = query.limit(itemNumber)
-  }
+  let query = firebase.firestore().collection('lists').where('userId', '==', userId)
 
+  if(itemNumber !== 'all') {
+    query = query.orderBy('createdAt', 'desc')
+
+    if(lastItem) {
+      query = query.startAfter(lastItem).limit(itemNumber)
+    } else {
+      query = query.limit(itemNumber)
+    }
+  }
   return await fetchLists(query)
 }
 
