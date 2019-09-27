@@ -102,6 +102,12 @@ const router = new Router({
       meta: { requireAuth: true }
     },
     {
+      path: '/lists/ranking',
+      name: 'ranking',
+      props: { type: 'ranking' },
+      component: Lists
+    },
+    {
       path: '/lists/create',
       name: 'listsCreate',
       component: () => import(/* webpackChunkName: "create-list" */ './views/ListCreate.vue'),
