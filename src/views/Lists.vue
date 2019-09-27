@@ -36,17 +36,8 @@ export default {
     loginUser() {
       return this.$store.state.user.loginUser
     },
-    listsType() {
-      if(this.type === 'mylists') {
-        return 'mylists'
-      } else if(this.type === 'likeLists') {
-        return 'likes'
-      } else {
-        return 'public'
-      }
-    },
     pageTitle() {
-      if(this.listsType === 'mylists') {
+      if(this.type === 'mylists') {
         return 'マイリスト'
       } else if(this.type === 'likeLists') {
         return 'お気に入り一覧'
@@ -64,9 +55,9 @@ export default {
     async infiniteLoad($state) {
       try {
         let results
-        if(this.listsType === 'mylists') {
+        if(this.type === 'mylists') {
           results = await fetchUserLists(30, this.loginUser.id, this.lastItem)
-        } else if(this.listsType === 'likes') {
+        } else if(this.type === 'likeLists') {
           results = await fetchUserLikeLists(30, this.loginUser.id, this.lastItem)
         } else {
           results = await fetchPublicLists(30, this.lastItem)
