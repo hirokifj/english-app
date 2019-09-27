@@ -13,6 +13,9 @@
         <div v-else key="detail">
           <div class="list-menu u-mb-medium">
             <button v-if="hasSentences" class="btn btn--blue" @click="startLearning">覚える</button>
+
+            <LikeIcon v-if="loginUser" :listId="id" :userId="loginUser.id" />
+
           </div>
           <div v-if="isOwner" class="user-menu u-mb-medium">
             <router-link :to="{ name: 'listsSelect', params: id }" class="link-text">例文を選択</router-link>
@@ -42,6 +45,7 @@ import Card from '../components/Card'
 import ErrMsg from '../components/ErrMsg'
 import SentencesList from '../components/SentencesList'
 import LearningCard from '../components/LearningCard'
+import LikeIcon from '../components/LikeIcon'
 import firebase from 'firebase'
 import { fetchListById, fetchSentenceById } from '../lib/functions'
 
@@ -60,7 +64,8 @@ export default {
     Card,
     ErrMsg,
     SentencesList,
-    LearningCard
+    LearningCard,
+    LikeIcon
   },
   computed: {
     loginUser() {
@@ -150,7 +155,12 @@ export default {
 
 .list-menu {
   display: flex;
+  align-items: center;
   justify-content: center;
+
+  & .btn:not(:last-child) {
+    margin-right: 4rem;
+  }
 }
 
 .user-menu {
