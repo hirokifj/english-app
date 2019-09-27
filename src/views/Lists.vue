@@ -20,7 +20,7 @@
 import Card from '../components/Card'
 import ErrMsg from '../components/ErrMsg'
 import ListsList from '../components/ListsList'
-import { fetchUserLists, fetchPublicLists, fetchUserLikeLists, fetchUserLikeListIds } from '../lib/functions'
+import { fetchUserLists, fetchPublicLists, fetchUserLikeLists } from '../lib/functions'
 
 export default {
   props: {
