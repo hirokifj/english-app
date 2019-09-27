@@ -122,7 +122,7 @@ export const fetchLikeId = async (userId, listId) => {
 }
 
 // 指定したユーザーのlikesドキュメント一覧を取得する
-export const fetchUserLikeListIds = async (itemNumber, userId, lastItem) => {
+export const fetchUserLikes = async (itemNumber, userId, lastItem) => {
   // 取得条件を定義
   let query = firebase.firestore().collection('likes').where('userId', '==', userId)
 
@@ -148,7 +148,7 @@ export const fetchUserLikeListIds = async (itemNumber, userId, lastItem) => {
 // （likesコレクションにはIDしか保持していないため、ラッパー関数として利用）
 export const fetchUserLikeLists = async (itemNumber, userId, lastItem) => {
   // likesコレクションのドキュメントを取得
-  const likes = await fetchUserLikeListIds(itemNumber, userId, lastItem)
+  const likes = await fetchUserLikes(itemNumber, userId, lastItem)
 
   // リストデータを取得する処理を配列に格納
   const promises = likes.items.map(like => {
