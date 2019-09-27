@@ -121,6 +121,49 @@ export const fetchLikeId = async (userId, listId) => {
   }
 }
 
+// 指定したユーザーのlikesドキュメント一覧を取得する
+export const fetchUserLikeListIds = async (itemNumber, userId, lastItem) => {
+  // 取得条件を定義
+  let query = firebase.firestore().collection('likes').where('userId', '==', userId)
+
+  if(itemNumber !== 'all') {
+    query = query.orderBy('createdAt', 'desc')
+
+    if(lastItem) {
+      query = query.startAfter(lastItem).limit(itemNumber)
+    } else {
+      query = query.limit(itemNumber)
+    }
+  }
+  // firestoreからデータを取得
+  const snapshot = await query.get()
+
+  return {
+    items: snapshot.docs.map(doc => Object.assign(doc.data(), { id: doc.id })), // ドキュメントIDもデータに含める
+    lastItem: snapshot.docs[snapshot.docs.length - 1]
+  }
+}
+
+// 指定したユーザーがlikeしているリスト一覧を取得する
+// （likesコレクションにはIDしか保持していないため、ラッパー関数として利用）
+export const fetchUserLikeLists = async (itemNumber, userId, lastItem) => {
+  // likesコレクションのドキュメントを取得
+  const likes = await fetchUserLikeListIds(itemNumber, userId, lastItem)
+
+  // リストデータを取得する処理を配列に格納
+  const promises = likes.items.map(like => {
+    return fetchListById(like.listId)
+  })
+  // リストデータの取得
+  const likeLists = await Promise.all(promises)
+
+  return {
+    items: likeLists.filter(list => list.isPublic === true || list.userId === userId), // 公開もしくは、自身のリストのみ返す
+    lastItem: likes.lastItem
+  }
+}
+
+
 // リスト登録のバリデーション。バリデーションOKならtrueを返す。
 export const validateList = (title, publicFlg) => {
   // タイトル入力チェック
