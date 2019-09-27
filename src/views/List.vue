@@ -57,7 +57,8 @@ export default {
     return {
       list: null,
       listSentences: [],
-      isLearning: false // 学習画面の表示管理
+      isLearning: false, // 学習画面の表示管理
+      isProcessingDelete: false // リスト削除処理中の管理フラグ
     }
   },
   components: {
@@ -84,15 +85,45 @@ export default {
   },
   methods: {
     async deleteList() {
+      // 連続クリック対策。処理中の場合は処理を抜ける。
+      if(this.isProcessingDelete) {
+        return
+      }
+
       // エラーメッセージ初期化
       this.$store.dispatch('error/clearError')
 
       try {
+        // 処理中フラグを立てる。
+        this.isProcessingDelete = true
+
+        // 当該リストに紐付く、likesコレクションのドキュメントIDを全て取得
+        const likesSnapshot = await firebase.firestore().collection('likes').where('listId', '==', this.id).get()
+        const deleteLikesIds = likesSnapshot.docs.map(doc => doc.id)
+
+        // likesドキュメントを削除
+        if(deleteLikesIds.length > 0) {
+          const deleteLikesPromises = deleteLikesIds.map(likeId => {
+            return new Promise((resolve, reject) => {
+              firebase.firestore().collection('likes').doc(likeId).delete()
+                .then(() => {
+                  resolve(true)
+                })
+                .catch((err) => {
+                  reject(err)
+                })
+            })
+          })
+
+          await Promise.all(deleteLikesPromises)
+        }
+
         // リストの削除
         await firebase.firestore().collection('lists').doc(this.id).delete()
         this.$router.push({ name: 'dashboard' })
       } catch(error) {
         this.$store.dispatch('error/setError', error)
+        this.isProcessingDelete = false
       }
     },
     startLearning() {
