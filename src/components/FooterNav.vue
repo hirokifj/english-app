@@ -68,7 +68,7 @@ export default {
   width: 100%;
   position: fixed;
   bottom: 0;
-  background-color: $color-blue-dark;
+  background-color: $color-blue;
   padding: 1.2rem 1rem;
 
   &__list {
