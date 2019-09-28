@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Lists from './views/Lists.vue'
+import NotFound from './views/NotFound.vue'
 import firebase from 'firebase'
 import store from './store/'
 
@@ -11,6 +12,11 @@ const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
+    {
+      path: '/404',
+      name: 'notFound',
+      component: NotFound
+    },
     {
       path: '/',
       name: 'home',
@@ -138,6 +144,10 @@ const router = new Router({
       name: 'listsList',
       component: Lists
     },
+    {
+      path: '*',
+      redirect: '/404'
+    }
   ],
   // ページ遷移持、スクロール位置をページ上部に戻す。
   scrollBehavior (to, from, savedPosition) {
