@@ -52,12 +52,18 @@ export default {
   },
   methods: {
     async deleteUserDatas() {
+      // 連続クリック対策。処理中の場合は処理を抜ける。
+      if(this.isProcessing) {
+        return
+      }
+
       // エラーメッセージ初期化
       this.$store.dispatch('error/clearError')
 
-      this.isProcessing = true
-
       try {
+        // 処理中フラグを立てる。
+        this.isProcessing = true
+
         // ユーザー情報を取得
         const user = firebase.auth().currentUser
         // 再認証処理
@@ -130,6 +136,7 @@ export default {
 
         // storeのログインユーザー情報をクリア
         this.$store.dispatch('user/clearLoginUser')
+        this.isProcessing = false
       } catch(error) {
         this.$store.dispatch('error/setError', error)
         this.isProcessing = false
