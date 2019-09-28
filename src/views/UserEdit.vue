@@ -9,7 +9,7 @@
           <h1>ユーザー情報</h1>
         </template>
         <div class="profile-item">
-          <span class="profile-item__title"><b>メールアドレス：</b>{{ loginUser.email }}</span>
+          <span class="profile-item__title"><b>メールアドレス：</b>{{ email }}</span>
           <router-link :to="{ name: 'emailedit' }" class="link-text">メールアドレス変更</router-link>
         </div>
       </Card>
@@ -39,6 +39,13 @@ export default {
   computed: {
     loginUser() {
       return this.$store.state.user.loginUser
+    },
+    email() {
+      if(this.loginUser) {
+        return this.loginUser.email
+      } else {
+        return ''
+      }
     }
   },
   methods: {
