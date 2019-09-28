@@ -17,6 +17,35 @@
         </div>
       </div>
     </section>
+
+    <section class="section-lists u-mb-big">
+      <div class="u-max-width">
+        <div class="list-group">
+
+          <Card color="pink" :white="true">
+            <template slot="header">
+              お気に入りランキング
+            </template>
+            <ListsList :lists="likeLists" class="u-mb-medium" />
+            <div class="u-center-text">
+              <router-link :to="{ name: 'ranking' }" class="btn btn--pink btn--big">もっと見る</router-link>
+            </div>
+          </Card>
+
+          <Card color="yellow" :white="true">
+            <template slot="header">
+              みんなのリスト
+            </template>
+            <ListsList :lists="publicLists" class="u-mb-medium" />
+            <div class="u-center-text">
+              <router-link :to="{ name: 'listsList' }" class="btn btn--yellow btn--big">もっと見る</router-link>
+            </div>
+          </Card>
+
+        </div>
+      </div>
+    </section>
+
     <section class="section-usage u-mb-big">
       <div class="u-center-text u-mb-medium">
           <h2 class="section-heading">
@@ -79,13 +108,43 @@
 </template>
 
 <script>
+import Card from '../components/Card'
+import ListsList from '../components/ListsList'
+import { fetchPublicLists, fetchListsOrderByLike } from '../lib/functions'
 
 export default {
   name: 'home',
+  async created() {
+    try {
+      // お気に入りリスト取得
+      const likeListsResults = await fetchListsOrderByLike(5)
+      likeListsResults.items.forEach(item => {
+        this.likeLists.push(item)
+      })
+      // ユーザーのリスト取得
+      const listsResults = await fetchPublicLists(5)
+      listsResults.items.forEach(item => {
+        this.publicLists.push(item)
+      })
+    } catch(error) {
+      this.$store.dispatch('error/setError', error)
+    }
+  },
+  data() {
+    return {
+      likeLists: [],
+      publicLists: []
+    }
+  },
+  components: {
+    Card,
+    ListsList
+  },
 }
 </script>
 
 <style lang="scss" scoped>
+// ヘッダーコピーセクション
 .header-catch {
   height: 90vh;
   background-color: $color-blue-dark;
@@ -171,6 +230,27 @@ export default {
   }
 }
 
+// リスト一覧セクション
+.section-lists {
+  background-color: $color-bg-grey;
+  padding: 10rem 0;
+}
+
+.list-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  @include respond(tab-port) {
+    display: block;
+  }
+
+  & .card {
+    flex: 0 0 45%;
+    margin-bottom: 6rem;
+  }
+}
+
+// 使い方セクション
 .section-heading {
   &__first {
     display: block;
