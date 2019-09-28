@@ -9,7 +9,7 @@
           <h1>ユーザー情報</h1>
         </template>
         <div class="profile-item">
-          <span class="profile-item__title"><b>メールアドレス：</b>{{ loginUser.email }}</span>
+          <span class="profile-item__title"><b>メールアドレス：</b>{{ email }}</span>
           <router-link :to="{ name: 'emailedit' }" class="link-text">メールアドレス変更</router-link>
         </div>
       </Card>
@@ -39,6 +39,13 @@ export default {
   computed: {
     loginUser() {
       return this.$store.state.user.loginUser
+    },
+    email() {
+      if(this.loginUser) {
+        return this.loginUser.email
+      } else {
+        return ''
+      }
     }
   },
   methods: {
@@ -47,12 +54,10 @@ export default {
       this.$store.dispatch('error/clearError')
 
       try {
-        // Firebaseからのログアウト
+        // Firebaseからのログアウト。ログアウト完了後、onAuthStateChangedによりリダイレクト。
         await firebase.auth().signOut()
         // storeのログインユーザー情報をクリア
         this.$store.dispatch('user/clearLoginUser')
-
-        this.$router.push({ name: 'signin' })
       } catch(error) {
         this.$store.dispatch('error/setError', error)
       }
