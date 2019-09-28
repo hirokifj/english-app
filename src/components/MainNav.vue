@@ -1,6 +1,12 @@
 <template>
   <nav class="main-nav">
     <ul class="main-nav__list">
+      <li class="main-nav__item main-nav__item--pc">
+        <router-link :to="{ name: 'ranking' }" class="main-nav__link">ランキング</router-link>
+      </li>
+      <li class="main-nav__item main-nav__item--pc">
+        <router-link :to="{ name: 'listsList' }" class="main-nav__link">公開リスト</router-link>
+      </li>
       <template v-if="loginUser">
         <li class="main-nav__item main-nav__item--pc">
           <router-link :to="{ name: 'dashboard' }" class="main-nav__link">マイページ</router-link>
