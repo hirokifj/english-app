@@ -69,7 +69,7 @@ export default {
   position: fixed;
   bottom: 0;
   background-color: rgba($color-blue-dark, .8);
-  padding: 1.6rem 1rem;
+  padding: 1.2rem 1rem;
 
   &__list {
     display: flex;
@@ -90,7 +90,7 @@ export default {
   }
 
   &__icon {
-    margin-bottom: 1rem;
+    margin-bottom: .6rem;
   }
 
   &__text {
