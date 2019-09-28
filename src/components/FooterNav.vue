@@ -62,7 +62,7 @@ export default {
 <style lang="scss" scoped>
 .footer-menu {
   display: none;
-  @include respond(phone) {
+  @include respond(tab-port) {
     display: block;
   }
   width: 100%;
