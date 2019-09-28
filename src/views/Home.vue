@@ -8,7 +8,7 @@
         <div class="header-catch__body">
           <h2 class="header-copy u-mb-medium">
             <span class="header-copy__first">「例文」で覚える英語</span>
-            <span class="header-copy__second">オリジナの例文集を作成して、楽しくボキャビル</span>
+            <span class="header-copy__second">オリジナルの例文集を作成して、楽しくボキャビル</span>
           </h2>
           <div v-if="!loginUser" class="header-catch__btns">
             <router-link :to="{ name: 'signin' }" class="btn btn--big btn--green">ログイン</router-link>
