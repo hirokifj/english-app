@@ -147,7 +147,7 @@ router.beforeEach((to, from, next) => {
 
   // ユーザーの認証チェック
   if(to.matched.some(record => record.meta.requireAuth)) {
-    firebase.auth().onAuthStateChanged(async user => {
+    firebase.auth().onAuthStateChanged(user => {
       if(user) {
         // ユーザーデータ取得
         store.dispatch('user/setLoginUser', {
