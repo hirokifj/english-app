@@ -68,7 +68,7 @@ export default {
   width: 100%;
   position: fixed;
   bottom: 0;
-  background-color: rgba($color-blue-dark, .8);
+  background-color: $color-blue-dark;
   padding: 1.2rem 1rem;
 
   &__list {
