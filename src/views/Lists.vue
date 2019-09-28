@@ -9,7 +9,7 @@
 
       <Card>
         <ListsList :lists="lists" :isShowLikeCount="this.type === 'ranking'" />
-        <infinite-loading @infinite="infiniteLoad"></infinite-loading>
+        <infinite-loading :identifier="identifier" @infinite="infiniteLoad"></infinite-loading>
       </Card>
 
     </div>
@@ -29,7 +29,8 @@ export default {
   data() {
     return {
       lists: [],
-      lastItem: null
+      lastItem: null,
+      identifier: 1
     }
   },
   computed: {
@@ -80,6 +81,14 @@ export default {
       } catch(error) {
         this.$store.dispatch('error/setError', error)
       }
+    }
+  },
+  watch: {
+    // 画面遷移時、ローディング内容をリセットする。
+    type() {
+      this.lists = []
+      this.lastItem = null
+      this.identifier += 1
     }
   }
 }
