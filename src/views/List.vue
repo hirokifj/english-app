@@ -131,6 +131,10 @@ export default {
     },
     stopLearning() {
       this.isLearning = false
+    },
+    canShow(listData) {
+      // 公開状態のものが閲覧可能。非公開の場合は、作成者自身のみ閲覧可能。
+      return listData.isPublic === true || (this.loginUser && this.loginUser.id === listData.userId)
     }
   },
   watch: {
@@ -140,10 +144,10 @@ export default {
           // リスト情報を取得
           const listData = await fetchListById(this.id)
 
-          if(listData) {
+          if(listData && this.canShow(listData)) {
             this.list = listData
           } else {
-            // リストデータがない場合は、ダッシュボードへリダイレクトする。
+            // リストデータがない、閲覧不可の場合は、ダッシュボードへリダイレクトする。
             this.$router.push({ name: 'dashboard' })
           }
         } catch(error) {
