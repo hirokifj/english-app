@@ -54,12 +54,10 @@ export default {
       this.$store.dispatch('error/clearError')
 
       try {
-        // Firebaseからのログアウト
+        // Firebaseからのログアウト。ログアウト完了後、onAuthStateChangedによりリダイレクト。
         await firebase.auth().signOut()
         // storeのログインユーザー情報をクリア
         this.$store.dispatch('user/clearLoginUser')
-
-        this.$router.push({ name: 'signin' })
       } catch(error) {
         this.$store.dispatch('error/setError', error)
       }
