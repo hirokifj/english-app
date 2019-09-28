@@ -138,7 +138,15 @@ const router = new Router({
       name: 'listsList',
       component: Lists
     },
-  ]
+  ],
+  // ページ遷移持、スクロール位置をページ上部に戻す。
+  scrollBehavior (to, from, savedPosition) {
+    if(savedPosition) { // ブラウザバック時は、元のスクロール位置を維持する
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  }
 })
 
 router.beforeEach((to, from, next) => {
