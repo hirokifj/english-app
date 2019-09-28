@@ -10,7 +10,7 @@
             <span class="header-copy__first">「例文」で覚える英語</span>
             <span class="header-copy__second">オリジナの例文集を作成して、楽しくボキャビル</span>
           </h2>
-          <div class="header-catch__btns">
+          <div v-if="!loginUser" class="header-catch__btns">
             <router-link :to="{ name: 'signin' }" class="btn btn--big btn--green">ログイン</router-link>
             <router-link :to="{ name: 'signup' }" class="btn btn--big btn--yellow">ユーザー登録</router-link>
           </div>
@@ -140,6 +140,11 @@ export default {
     Card,
     ListsList
   },
+  computed: {
+    loginUser() {
+      return this.$store.state.user.loginUser
+    }
+  }
 }
 </script>
 
