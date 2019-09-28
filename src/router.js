@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import Dashboard from './views/Dashboard.vue'
 import Lists from './views/Lists.vue'
+import List from './views/List.vue'
+import SelectSentence from './views/SelectSentence.vue'
 import NotFound from './views/NotFound.vue'
 import firebase from 'firebase'
 import store from './store/'
@@ -46,7 +49,7 @@ const router = new Router({
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: () => import(/* webpackChunkName: "dashboard" */ './views/Dashboard.vue'),
+      component: Dashboard,
       meta: { requireAuth: true }
     },
     {
@@ -123,7 +126,7 @@ const router = new Router({
       path: '/lists/:id/select',
       name: 'listsSelect',
       props: true,
-      component: () => import(/* webpackChunkName: "select-list" */ './views/SelectSentence.vue'),
+      component: SelectSentence,
       meta: { requireAuth: true }
     },
     {
@@ -137,7 +140,7 @@ const router = new Router({
       path: '/lists/:id',
       name: 'listsDetail',
       props: true,
-      component: () => import(/* webpackChunkName: "detail-list" */ './views/List.vue')
+      component: List
     },
     {
       path: '/lists/',
