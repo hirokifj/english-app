@@ -167,6 +167,9 @@ router.beforeEach((to, from, next) => {
 
         next()
       } else {
+        // storeのログインユーザー情報をクリア
+        store.dispatch('user/clearLoginUser')
+
         next({ name: 'signin' })
       }
     })
