@@ -3,7 +3,7 @@
     <section class="header-catch">
       <div class="header-catch__content">
         <div class="header-catch__img">
-          <img src="@/assets/top-img.png" alt="">
+          <img src="@/assets/top-img.png" alt="「例文」で覚える英語">
         </div>
         <div class="header-catch__body">
           <h2 class="header-copy u-mb-medium">
@@ -56,7 +56,7 @@
       <div class="usage u-max-width">
         <div class="usage__item">
           <div class="usage__img">
-            <img src="@/assets/sentence-img.png">
+            <img src="@/assets/sentence-img.png" alt="英文と日本語訳をセットで登録">
           </div>
           <div class="usage__body">
             <h3 class="usage__heading">英文と日本語訳をセットで登録</h3>
@@ -68,7 +68,7 @@
         </div>
         <div class="usage__item">
           <div class="usage__img">
-            <img src="@/assets/list-img.png">
+            <img src="@/assets/list-img.png" alt="登録した例文を「リスト」にまとめる">
           </div>
           <div class="usage__body">
             <h3 class="usage__heading">登録した例文を「リスト」にまとめる</h3>
@@ -80,7 +80,7 @@
         </div>
         <div class="usage__item">
           <div class="usage__img">
-            <img src="@/assets/learn-img.png">
+            <img src="@/assets/learn-img.png" alt="「リスト」で英語表現を覚える">
           </div>
           <div class="usage__body">
             <h3 class="usage__heading">「リスト」で英語表現を覚える</h3>
@@ -92,7 +92,7 @@
         </div>
         <div class="usage__item">
           <div class="usage__img">
-            <img src="@/assets/share-img.png">
+            <img src="@/assets/share-img.png" alt="作成した「リスト」をシェア">
           </div>
           <div class="usage__body">
             <h3 class="usage__heading">作成した「リスト」をシェア</h3>
