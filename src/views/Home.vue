@@ -316,9 +316,12 @@ export default {
 
   &__description {
     font-size: 14px;
+    @include respond(phone) {
+      font-size: 16px;
+    }
 
     & p:not(:last-child) {
-      margin-bottom: 1rem;
+      margin-bottom: 1.6rem;
     }
   }
 }
