@@ -63,15 +63,25 @@ export default {
   },
   methods: {
     async deleteItem() {
-      // エラーメッセージ初期化
-      this.$store.dispatch('error/clearError')
+      // 削除の意思確認
+      const result = await this.$swal({
+        title: '例文を削除してよろしいですか？',
+        type: 'warning',
+        showCancelButton: true
+      })
 
-      try {
-        // 例文の削除
-        await firebase.firestore().collection('sentences').doc(this.id).delete()
-        this.$router.push({ name: 'dashboard' })
-      } catch(error) {
-        this.$store.dispatch('error/setError', error)
+      // 削除確認が取れた場合に実行
+      if(result.value === true) {
+        // エラーメッセージ初期化
+        this.$store.dispatch('error/clearError')
+
+        try {
+          // 例文の削除
+          await firebase.firestore().collection('sentences').doc(this.id).delete()
+          this.$router.push({ name: 'dashboard' })
+        } catch(error) {
+          this.$store.dispatch('error/setError', error)
+        }
       }
     }
   },
