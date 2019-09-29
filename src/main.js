@@ -6,6 +6,7 @@ import './style/app.scss'
 import './plugins/firebase'
 import './plugins/infinite-loading'
 import './plugins/fontawesome'
+import './plugins/sweetalert2'
 
 Vue.config.productionTip = false
 

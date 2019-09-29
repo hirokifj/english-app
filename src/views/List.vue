@@ -90,40 +90,50 @@ export default {
         return
       }
 
-      // エラーメッセージ初期化
-      this.$store.dispatch('error/clearError')
+      // 削除の意思確認
+      const result = await this.$swal({
+        title: 'リストを削除してよろしいですか？',
+        type: 'warning',
+        showCancelButton: true
+      })
 
-      try {
-        // 処理中フラグを立てる。
-        this.isProcessingDelete = true
+      // 削除確認が取れた場合に実行
+      if(result.value === true) {
+        // エラーメッセージ初期化
+        this.$store.dispatch('error/clearError')
 
-        // 当該リストに紐付く、likesコレクションのドキュメントIDを全て取得
-        const likesSnapshot = await firebase.firestore().collection('likes').where('listId', '==', this.id).get()
-        const deleteLikesIds = likesSnapshot.docs.map(doc => doc.id)
+        try {
+          // 処理中フラグを立てる。
+          this.isProcessingDelete = true
 
-        // likesドキュメントを削除
-        if(deleteLikesIds.length > 0) {
-          const deleteLikesPromises = deleteLikesIds.map(likeId => {
-            return new Promise((resolve, reject) => {
-              firebase.firestore().collection('likes').doc(likeId).delete()
-                .then(() => {
-                  resolve(true)
-                })
-                .catch((err) => {
-                  reject(err)
-                })
+          // 当該リストに紐付く、likesコレクションのドキュメントIDを全て取得
+          const likesSnapshot = await firebase.firestore().collection('likes').where('listId', '==', this.id).get()
+          const deleteLikesIds = likesSnapshot.docs.map(doc => doc.id)
+
+          // likesドキュメントを削除
+          if(deleteLikesIds.length > 0) {
+            const deleteLikesPromises = deleteLikesIds.map(likeId => {
+              return new Promise((resolve, reject) => {
+                firebase.firestore().collection('likes').doc(likeId).delete()
+                  .then(() => {
+                    resolve(true)
+                  })
+                  .catch((err) => {
+                    reject(err)
+                  })
+              })
             })
-          })
 
-          await Promise.all(deleteLikesPromises)
+            await Promise.all(deleteLikesPromises)
+          }
+
+          // リストの削除
+          await firebase.firestore().collection('lists').doc(this.id).delete()
+          this.$router.push({ name: 'dashboard' })
+        } catch(error) {
+          this.$store.dispatch('error/setError', error)
+          this.isProcessingDelete = false
         }
-
-        // リストの削除
-        await firebase.firestore().collection('lists').doc(this.id).delete()
-        this.$router.push({ name: 'dashboard' })
-      } catch(error) {
-        this.$store.dispatch('error/setError', error)
-        this.isProcessingDelete = false
       }
     },
     startLearning() {
