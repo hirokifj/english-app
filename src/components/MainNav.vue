@@ -89,6 +89,9 @@ export default {
 
     &:hover {
       color: $color-pink-light;
+      @include respond(phone) {
+        color: $color-white;
+      }
     }
   }
 }
