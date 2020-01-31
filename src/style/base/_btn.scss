@@ -1,0 +1,100 @@
+.btn {
+  position: relative;
+  display: inline-block;
+  max-width: 20rem;
+  font-size: 14px;
+  text-align: center;
+  padding: 1.5rem 4rem;
+  letter-spacing: 2px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 0 $color-grey-dark-2;
+  transition: background-color .2s;
+
+  &:active {
+    top: 4px;
+    box-shadow: none;
+  }
+
+  &--small {
+    @include respond(phone) {
+      padding: 1.5rem 2rem;
+    }
+  }
+
+  &--big {
+    min-width: 25rem;
+    padding: 2rem 2rem;
+    box-sizing: border-box;
+    @include respond(phone) {
+      max-width: 100%;
+      width: 100%;
+    }
+  }
+
+  &--blue {
+    background-color: $color-blue;
+    color: $color-white;
+
+    &:link,
+    &:visited {
+      color: white;
+      text-decoration: none;
+    }
+
+    &:active,
+    &:hover {
+      background-color: $color-blue-light;
+    }
+  }
+
+  &--green {
+    background-color: $color-green;
+    color: $color-white;
+
+    &:link,
+    &:visited {
+      color: white;
+      text-decoration: none;
+    }
+
+    &:active,
+    &:hover {
+      background-color: $color-green-light;
+    }
+  }
+
+  &--yellow {
+    background-color: $color-yellow;
+    color: $color-white;
+
+    &:link,
+    &:visited {
+      color: white;
+      text-decoration: none;
+    }
+
+    &:active,
+    &:hover {
+      background-color: $color-yellow-light;
+    }
+  }
+
+  &--pink {
+    background-color: $color-pink;
+    color: $color-white;
+
+    &:link,
+    &:visited {
+      color: white;
+      text-decoration: none;
+    }
+
+    &:active,
+    &:hover {
+      background-color: $color-pink-light;
+    }
+  }
+}
